@@ -278,7 +278,7 @@ export default function DashboardPage() {
               {isSidebarExpanded ? (
                 <>
                   <div className="flex items-center px-1">
-                    <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-slate-100 to-amber-200 bg-clip-text text-transparent">
+                    <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
                       MyGoal
                     </span>
                   </div>
