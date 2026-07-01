@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS public.vision_board (
     image_url TEXT NOT NULL,
     title TEXT NOT NULL,
     target_company TEXT,
+    target_year INTEGER DEFAULT 2027,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

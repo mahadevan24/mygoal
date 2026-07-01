@@ -7,13 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Sparkles, Trash2, Plus, Image as ImageIcon, Flame } from 'lucide-react';
+import { Sparkles, X, Plus, Image as ImageIcon, Flame } from 'lucide-react';
 
 interface VisionBoardItem {
   id: string;
   image_url: string;
   title: string;
   target_company?: string;
+  target_year?: number;
   created_at: string;
 }
 
@@ -30,6 +31,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
   // Form states
   const [title, setTitle] = useState<string>('');
   const [targetCompany, setTargetCompany] = useState<string>('');
+  const [targetYear, setTargetYear] = useState<string>('2027');
   const [file, setFile] = useState<File | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -102,7 +104,8 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
           user_id: userId,
           image_url: imageUrl,
           title,
-          target_company: targetCompany
+          target_company: targetCompany,
+          target_year: targetYear ? parseInt(targetYear, 10) : 2027
         });
 
       if (dbError) throw dbError;
@@ -110,6 +113,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
       // Reset states
       setTitle('');
       setTargetCompany('');
+      setTargetYear('2027');
       setFile(null);
       setIsOpen(false);
       fetchItems();
@@ -122,6 +126,10 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
 
   const handleDelete = async (itemId: string, imageUrl: string) => {
     if (!isSupabaseConfigured) return;
+
+    const confirmed = window.confirm("Are you sure you want to delete this goal card?");
+    if (!confirmed) return;
+
     try {
       // 1. Delete image from storage
       // Extract filepath from public URL: should be like "userId/filename.ext"
@@ -153,7 +161,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
             My Vision Board
           </h2>
           <p className="text-slate-400 text-sm">
-            Visual representations of where you want to be by July 2027.
+            Visual representations of your career and consistency goals.
           </p>
         </div>
 
@@ -201,6 +209,19 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
                     <option value="Stripe" />
                     <option value="OpenAI" />
                   </datalist>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="target-year" className="text-[10px] font-semibold uppercase tracking-widest font-audiowide text-slate-300">Target Year</Label>
+                  <Input
+                    id="target-year"
+                    type="number"
+                    placeholder="e.g. 2027"
+                    value={targetYear}
+                    onChange={(e) => setTargetYear(e.target.value)}
+                    className="bg-slate-950 border-slate-800 text-slate-100 font-audiowide tracking-wider text-[11px] placeholder:text-slate-650 h-9"
+                    min={new Date().getFullYear()}
+                    max={2100}
+                  />
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="image-file" className="text-[10px] font-semibold uppercase tracking-widest font-audiowide text-slate-300">Goal Image</Label>
@@ -256,7 +277,11 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
               key={item.id}
               className="group overflow-hidden bg-slate-950/40 border-slate-800/80 hover:border-indigo-500/30 transition-all duration-300 relative shadow-lg"
             >
-              <div className="h-44 w-full relative overflow-hidden bg-slate-900">
+              <div 
+                className="h-44 w-full relative overflow-hidden bg-slate-900 cursor-pointer"
+                onDoubleClick={() => handleDelete(item.id, item.image_url)}
+                title="Double-click image to delete"
+              >
                 <img
                   src={item.image_url}
                   alt={item.title}
@@ -264,13 +289,13 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
                 
-                {/* Delete button (only show on hover) */}
+                {/* Subtle Delete button (only show faintly on hover) */}
                 <button
                   onClick={() => handleDelete(item.id, item.image_url)}
-                  className="absolute top-2 right-2 p-1.5 rounded-lg bg-slate-950/80 hover:bg-red-650 text-slate-400 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity border border-slate-800/60"
-                  title="Remove visual"
+                  className="absolute top-2 right-2 p-1 text-slate-500 hover:text-slate-350 opacity-0 group-hover:opacity-20 hover:!opacity-80 transition-all duration-250 cursor-pointer"
+                  title="Delete goal card (Double-click image to delete)"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
 
                 {/* Company Tag */}
@@ -289,7 +314,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
                     Pinned on {new Date(item.created_at).toLocaleDateString()}
                   </span>
                   <span className="text-violet-400 text-[10px] flex items-center gap-1 font-audiowide tracking-wider">
-                    <Sparkles className="w-3.5 h-3.5" /> Target 2027
+                    <Sparkles className="w-3.5 h-3.5" /> Target {item.target_year || 2027}
                   </span>
                 </div>
               </CardContent>
