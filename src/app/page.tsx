@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient';
 import ContributionGrid from '@/components/ContributionGrid';
@@ -8,9 +8,10 @@ import FocusTimer from '@/components/FocusTimer';
 import VisionBoard from '@/components/VisionBoard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Flame, LogOut, Target, Loader2, Trash2, Sparkles } from 'lucide-react';
+import { Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { differenceInDays, parseISO } from 'date-fns';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 interface StudyLog {
   date: string;
@@ -26,6 +27,24 @@ export default function DashboardPage() {
   const [loadingSession, setLoadingSession] = useState<boolean>(true);
   const [logs, setLogs] = useState<StudyLog[]>([]);
   const [loadingLogs, setLoadingLogs] = useState<boolean>(false);
+  const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+  const [isClearConfirmOpen, setIsClearConfirmOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Click outside to close profile dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    }
+    if (isProfileOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isProfileOpen]);
 
   // Mock data for preview when Supabase is not configured yet
   const mockLogs: StudyLog[] = [];
@@ -96,10 +115,8 @@ export default function DashboardPage() {
   };
 
   // Clear all study logs
-  const handleClearLogs = async () => {
-    if (!confirm('Are you sure you want to clear all your logged preparation counts? This cannot be undone.')) {
-      return;
-    }
+  const executeClearLogs = async () => {
+    setIsClearConfirmOpen(false);
 
     if (!isSupabaseConfigured) {
       setLogs([]);
@@ -204,28 +221,49 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex items-center gap-4">
-            {user && (
-              <div className="hidden md:flex flex-col text-right">
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide">Logged In</span>
-                <span className="text-xs text-slate-300 font-semibold font-mono">{user.email}</span>
-              </div>
-            )}
-            {isSupabaseConfigured && (
-              <div className="flex gap-2 font-audiowide">
-                <Button
-                  onClick={handleClearLogs}
-                  className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white h-9 px-3 gap-2 text-[10px] tracking-wider transition-all shadow-md shadow-violet-950/20 border-none"
-                >
-                  <Trash2 className="w-4 h-4" /> Clear All Counts
-                </Button>
-                <Button
-                  onClick={handleLogout}
-                  className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white h-9 px-3 gap-2 text-[10px] tracking-wider transition-all shadow-md shadow-violet-950/20 border-none"
-                >
-                  <LogOut className="w-4 h-4" /> Log Out
-                </Button>
-              </div>
-            )}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="relative p-1 rounded-full border border-violet-500/35 hover:border-violet-500/80 bg-slate-900/60 hover:bg-slate-900 transition-all duration-300 text-violet-400 focus:outline-none flex items-center justify-center w-10 h-10 shadow-md shadow-violet-950/20 cursor-pointer"
+                aria-label="Profile settings"
+              >
+                <User className="w-5 h-5 text-violet-400" />
+                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-950 animate-pulse" />
+              </button>
+
+              {isProfileOpen && (
+                <div className="absolute right-0 mt-2 w-64 rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md shadow-2xl shadow-violet-950/30 py-2 z-50 animate-in fade-in duration-200">
+                  <div className="px-4 py-2 border-b border-slate-900 flex flex-col">
+                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide">Logged In</span>
+                    <span className="text-xs text-slate-300 font-semibold font-mono truncate">{user ? user.email : 'Guest / Demo Mode'}</span>
+                  </div>
+                  <div className="p-1 space-y-0.5 font-audiowide">
+                    <button
+                      onClick={() => {
+                        setIsProfileOpen(false);
+                        setIsClearConfirmOpen(true);
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                    >
+                      <Trash2 className="w-4 h-4 text-violet-400" />
+                      Clear All Counts
+                    </button>
+                    {isSupabaseConfigured && (
+                      <button
+                        onClick={() => {
+                          setIsProfileOpen(false);
+                          handleLogout();
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                      >
+                        <LogOut className="w-4 h-4 text-violet-400" />
+                        Log Out
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -390,6 +428,40 @@ export default function DashboardPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Clear Counts Confirmation Modal */}
+      <Dialog open={isClearConfirmOpen} onOpenChange={setIsClearConfirmOpen}>
+        <DialogContent className="bg-slate-900/95 border border-slate-800 text-slate-100 max-w-sm backdrop-blur-md shadow-2xl shadow-violet-950/20 rounded-xl overflow-hidden p-6 gap-6">
+          <DialogHeader className="space-y-3">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 text-red-500 border border-red-500/20">
+              <AlertTriangle className="h-6 w-6" />
+            </div>
+            <div className="text-center space-y-2">
+              <DialogTitle className="text-lg text-slate-100 font-orbitron tracking-wide font-black">
+                Confirm Reset
+              </DialogTitle>
+              <DialogDescription className="text-xs text-slate-400 leading-relaxed font-sans">
+                Are you sure you want to clear all your logged preparation counts? This action is permanent and cannot be undone.
+              </DialogDescription>
+            </div>
+          </DialogHeader>
+
+          <DialogFooter className="border-slate-800/60 bg-slate-950/40 flex flex-col-reverse sm:flex-row gap-2 mt-4 justify-end">
+            <Button
+              onClick={() => setIsClearConfirmOpen(false)}
+              className="w-full sm:w-auto bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:text-violet-400 hover:border-violet-500/20 text-slate-355 font-audiowide text-[10px] tracking-wider py-2 px-4 h-auto cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={executeClearLogs}
+              className="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-audiowide text-[10px] tracking-wider py-2 px-4 h-auto border-none cursor-pointer shadow-lg shadow-violet-950/20"
+            >
+              Yes, Clear All
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
