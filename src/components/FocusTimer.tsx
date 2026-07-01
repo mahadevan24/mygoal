@@ -187,7 +187,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
         <div className="space-y-1.5">
           <CardTitle className="text-lg text-slate-100 flex items-start gap-2.5 font-orbitron tracking-wide leading-snug">
             <Clock className="w-5 h-5 text-orange-400 shrink-0 mt-1" />
-            <span>Study Logger & Focus Timer</span>
+            <span>Focus Logger</span>
           </CardTitle>
           <CardDescription className="text-slate-400 text-xs leading-relaxed">
             Log your preparation hours to maintain your consistency streak.
