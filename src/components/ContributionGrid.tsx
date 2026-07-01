@@ -319,33 +319,33 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
 
 export function ContributionGridSkeleton() {
   return (
-    <div className="h-full flex flex-col gap-6 animate-pulse">
+    <div className="h-full flex flex-col gap-4 sm:gap-6 animate-pulse">
       {/* Streaks and Stats Header Skeleton */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-slate-800/60 border border-slate-800/40" />
-            <div className="space-y-1.5 flex-1">
-              <div className="h-2.5 w-16 bg-slate-800/80 rounded" />
-              <div className="h-4 w-20 bg-slate-800/60 rounded" />
+          <div key={i} className="p-3 sm:p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-800/60 border border-slate-800/40 shrink-0" />
+            <div className="space-y-1.5 min-w-0 flex-1">
+              <div className="h-2 w-12 sm:w-16 bg-slate-800/80 rounded" />
+              <div className="h-3.5 sm:h-4 w-14 sm:w-20 bg-slate-800/60 rounded" />
             </div>
           </div>
         ))}
       </div>
 
       {/* Contribution Calendar Card Skeleton */}
-      <div className="flex-1 p-6 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col justify-between gap-6">
+      <div className="flex-1 p-4 sm:p-6 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col justify-between gap-6">
         <div className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded bg-slate-800/80" />
+              <div className="w-5 h-5 rounded bg-slate-800/80 shrink-0" />
               <div className="h-4 w-48 bg-slate-800/80 rounded" />
             </div>
             {/* Legend Skeleton */}
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 text-[10px] font-audiowide tracking-wider text-slate-500">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 rounded-[3px] bg-slate-800/60 border border-slate-800/40" />
+                  <div className="w-4 h-4 rounded-[3px] bg-slate-800/60 border border-slate-800/40 shrink-0" />
                   <div className="h-2 w-12 bg-slate-800/60 rounded" />
                 </div>
               ))}
@@ -353,17 +353,17 @@ export function ContributionGridSkeleton() {
           </div>
 
           {/* The Grid Skeleton */}
-          <div className="overflow-x-auto pb-2 scrollbar-none">
+          <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-800">
             <div className="flex gap-1 min-w-[1300px] justify-between">
               {/* Weekday indicators */}
-              <div className="flex flex-col gap-1 text-[9px] pr-2 select-none">
-                <div className="h-5 flex items-center text-slate-700 font-audiowide">Mon</div>
+              <div className="flex flex-col gap-1 text-[9px] text-slate-500 pr-2 select-none font-audiowide">
+                <div className="h-5 flex items-center">Mon</div>
                 <div className="h-5" />
-                <div className="h-5 flex items-center text-slate-700 font-audiowide">Wed</div>
+                <div className="h-5 flex items-center">Wed</div>
                 <div className="h-5" />
-                <div className="h-5 flex items-center text-slate-700 font-audiowide">Fri</div>
+                <div className="h-5 flex items-center">Fri</div>
                 <div className="h-5" />
-                <div className="h-5 flex items-center text-slate-700 font-audiowide">Sun</div>
+                <div className="h-5 flex items-center">Sun</div>
               </div>
 
               {/* Weeks (53 columns of 7 blocks) */}
@@ -378,7 +378,7 @@ export function ContributionGridSkeleton() {
                     {Array.from({ length: 7 - paddingOffset }).map((_, dIndex) => (
                       <div
                         key={dIndex}
-                        className="w-5 h-5 rounded-[3px] bg-slate-900 border border-slate-950/40"
+                        className="w-5 h-5 rounded-[3px] bg-slate-900 border border-slate-950"
                       />
                     ))}
                   </div>

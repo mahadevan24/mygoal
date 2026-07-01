@@ -190,13 +190,20 @@ export default function DashboardPage() {
 
   if (loadingSession) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex relative overflow-hidden animate-pulse">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row relative overflow-hidden animate-pulse">
         {/* Visual background accents */}
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-orange-600/5 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/5 blur-[120px] pointer-events-none" />
 
+        {/* Mobile Top Bar Skeleton */}
+        <div className="md:hidden flex items-center justify-between px-4 py-3 border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40 shrink-0 w-full">
+          <div className="w-8 h-8 rounded-lg bg-slate-800/40" />
+          <div className="h-4 w-16 bg-slate-800/40 rounded" />
+          <div className="w-9 h-9 rounded-full bg-slate-800/40" />
+        </div>
+
         {/* Sidebar Skeleton */}
-        <aside className="w-16 h-screen border-r border-slate-900 bg-slate-950/40 backdrop-blur-md flex flex-col justify-between p-3 shrink-0">
+        <aside className="hidden md:flex w-16 h-screen border-r border-slate-900 bg-slate-950/40 backdrop-blur-md flex-col justify-between p-3 shrink-0">
           <div className="flex flex-col gap-6">
             <div className="flex justify-center py-2">
               <div className="p-1.5 rounded-lg bg-slate-800/40 w-8 h-8" />
@@ -216,23 +223,23 @@ export default function DashboardPage() {
         </aside>
 
         {/* Main Content Area Skeleton */}
-        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-          <div className="max-w-7xl w-full mx-auto px-6 py-6 space-y-6 relative z-10 flex-1">
+        <div className="flex-1 flex flex-col min-w-0 h-[calc(100vh-53px)] md:h-screen overflow-y-auto">
+          <div className="max-w-7xl w-full mx-auto px-3 py-4 md:px-6 md:py-6 space-y-4 md:space-y-6 relative z-10 flex-1">
             {/* Daily Focus Panel Skeleton */}
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                 {/* Focus Timer Skeleton */}
                 <div className="lg:col-span-4 flex flex-col">
-                  <div className="h-[432px] rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm p-6 flex flex-col justify-between">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between pb-3 border-b border-slate-800/40">
+                  <div className="h-[432px] rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm p-4 sm:p-6 flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-800/40 gap-3 sm:gap-4">
                         <div className="space-y-2 flex-1">
                           <div className="h-4 w-40 bg-slate-800/80 rounded" />
                           <div className="h-3 w-56 bg-slate-800/60 rounded" />
                         </div>
-                        <div className="h-6 w-24 bg-slate-800/60 rounded-md" />
+                        <div className="h-6 w-24 bg-slate-800/60 rounded-md self-start sm:self-auto shrink-0" />
                       </div>
-                      <div className="grid grid-cols-3 gap-2 pt-2">
+                      <div className="grid grid-cols-3 gap-2">
                         <div className="h-8 bg-slate-800/40 rounded-lg" />
                         <div className="h-8 bg-slate-800/40 rounded-lg" />
                         <div className="h-8 bg-slate-800/40 rounded-lg" />
