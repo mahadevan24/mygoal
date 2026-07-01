@@ -133,3 +133,9 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .font-orbitron {
+    letter-spacing: 0.075em;
+  }
+}

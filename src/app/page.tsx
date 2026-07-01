@@ -212,16 +212,14 @@ export default function DashboardPage() {
             {isSupabaseConfigured && (
               <div className="flex gap-2 font-audiowide">
                 <Button
-                  variant="outline"
                   onClick={handleClearLogs}
-                  className="border-slate-800 text-slate-400 hover:text-red-400 hover:bg-red-950/10 h-9 px-3 gap-2 text-[10px] tracking-wider"
+                  className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white h-9 px-3 gap-2 text-[10px] tracking-wider transition-all shadow-md shadow-violet-950/20 border-none"
                 >
                   <Trash2 className="w-4 h-4" /> Clear All Counts
                 </Button>
                 <Button
-                  variant="outline"
                   onClick={handleLogout}
-                  className="border-slate-800 text-slate-400 hover:text-red-400 hover:bg-red-950/10 h-9 px-3 gap-2 text-[10px] tracking-wider"
+                  className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white h-9 px-3 gap-2 text-[10px] tracking-wider transition-all shadow-md shadow-violet-950/20 border-none"
                 >
                   <LogOut className="w-4 h-4" /> Log Out
                 </Button>

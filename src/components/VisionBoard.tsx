@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Sparkles, Trash2, Plus, Image as ImageIcon, Flame, Building2, Eye } from 'lucide-react';
+import { Sparkles, Trash2, Plus, Image as ImageIcon, Flame } from 'lucide-react';
 
 interface VisionBoardItem {
   id: string;
@@ -20,27 +20,6 @@ interface VisionBoardItem {
 interface VisionBoardProps {
   userId: string;
 }
-
-const DEFAULT_GOALS = [
-  {
-    id: 'g1',
-    title: 'Design Scalable Distributed Systems',
-    target_company: 'Google',
-    image_url: 'gradient-google',
-  },
-  {
-    id: 'g2',
-    title: 'Solve complex customer-centric LLD',
-    target_company: 'Amazon',
-    image_url: 'gradient-amazon',
-  },
-  {
-    id: 'g3',
-    title: 'Master SOLID principles & clean architectures',
-    target_company: 'Microsoft',
-    image_url: 'gradient-microsoft',
-  }
-];
 
 export default function VisionBoard({ userId }: VisionBoardProps) {
   const [items, setItems] = useState<VisionBoardItem[]>([]);
@@ -164,20 +143,6 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
     }
   };
 
-  // Render gradient background for mock cards
-  const getGradientClass = (company: string) => {
-    switch (company.toLowerCase()) {
-      case 'google':
-        return 'from-red-500/20 via-yellow-500/10 to-blue-500/20 border-blue-500/30';
-      case 'amazon':
-        return 'from-orange-500/20 to-slate-800/80 border-orange-500/30';
-      case 'microsoft':
-        return 'from-teal-500/20 via-blue-500/10 to-indigo-500/20 border-indigo-500/30';
-      default:
-        return 'from-violet-500/20 to-indigo-500/20 border-violet-500/30';
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -193,7 +158,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
 
         {isSupabaseConfigured && (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger render={<Button className="bg-indigo-600 hover:bg-indigo-500 text-white gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider" />}>
+            <DialogTrigger render={<Button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider border-none" />}>
               <Plus className="w-4 h-4" /> Add Goal Card
             </DialogTrigger>
             <DialogContent className="bg-slate-900 border border-slate-800 text-slate-100 max-w-sm">
@@ -260,7 +225,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
                 <Button
                   type="submit"
                   disabled={uploading}
-                  className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium font-audiowide tracking-wider text-[11px] py-2"
+                  className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium font-audiowide tracking-wider text-[11px] py-2 border-none"
                 >
                   {uploading ? 'Pinning...' : 'Pin to Board'}
                 </Button>
@@ -324,43 +289,19 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
             </Card>
           ))}
 
-          {/* Fallback default goals to keep the screen motivating if no uploads exist */}
-          {items.length === 0 &&
-            DEFAULT_GOALS.map((goal) => (
-              <Card
-                key={goal.id}
-                className={`group overflow-hidden bg-gradient-to-br border relative shadow-lg ${getGradientClass(
-                  goal.target_company
-                )}`}
-              >
-                <div className="h-44 w-full flex flex-col justify-between p-5 relative">
-                  {/* Floating geometric detail */}
-                  <div className="absolute top-3 right-3 opacity-15 text-slate-500 shrink-0">
-                    <Building2 className="w-16 h-16" />
-                  </div>
-                  
-                  <span className="self-start px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-950/60 text-slate-300 border border-slate-800/40 font-audiowide">
-                    {goal.target_company} Focus
-                  </span>
-
-                  <div className="space-y-2">
-                    <h3 className="text-base font-extrabold text-slate-100 tracking-tight leading-tight font-orbitron">
-                      {goal.title}
-                    </h3>
-                    <p className="text-[11px] text-slate-400 font-medium">
-                      Core objective for high-caliber interviews
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between border-t border-slate-800/40 pt-3 mt-1">
-                    <span className="text-[9px] text-slate-500 font-semibold font-audiowide">DEFAULT FOCUS CARD</span>
-                    <span className="text-slate-350 text-[10px] flex items-center gap-1 font-audiowide tracking-wider">
-                      <Sparkles className="w-3.5 h-3.5" /> 1-Year Goal
-                    </span>
-                  </div>
-                </div>
-              </Card>
-            ))}
+          {items.length === 0 && (
+            <div className="col-span-full py-12 px-6 rounded-xl border border-dashed border-slate-800/80 bg-slate-900/10 text-center flex flex-col items-center justify-center gap-3">
+              <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/10 animate-pulse">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div className="space-y-1.5 max-w-sm">
+                <h3 className="text-sm font-bold text-slate-200 font-orbitron tracking-wider">Your Vision Board is Empty</h3>
+                <p className="text-xs text-slate-450 font-sans leading-relaxed">
+                  Pin your target companies, career goals, or motivational tech workspaces here to visually anchor your consistency journey.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
