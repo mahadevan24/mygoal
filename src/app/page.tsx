@@ -9,7 +9,7 @@ import VisionBoard from '@/components/VisionBoard';
 import DreamBoard from '@/components/DreamBoard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Crosshair, Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { differenceInDays, parseISO } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -308,7 +308,7 @@ export default function DashboardPage() {
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
-                <Flame className="w-5 h-5 text-orange-400 shrink-0 fill-current animate-pulse" />
+                <Crosshair className="w-5 h-5 text-orange-400 shrink-0" />
                 {isSidebarExpanded && <span className="text-xs transition-all duration-300">Daily Focus</span>}
                 {!isSidebarExpanded && (
                   <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
