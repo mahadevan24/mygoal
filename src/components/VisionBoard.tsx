@@ -264,9 +264,29 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-pulse">
           {[1, 2, 3].map((n) => (
-            <div key={n} className="h-44 rounded-xl bg-slate-900/40 border border-slate-800/80 animate-pulse" />
+            <Card
+              key={n}
+              className="overflow-hidden bg-slate-950/40 border-slate-800/80 shadow-lg"
+            >
+              <div className="h-44 w-full bg-slate-900/60 relative overflow-hidden">
+                {/* Company Tag skeleton */}
+                <div className="absolute top-2 left-2 w-16 h-4 rounded bg-slate-800/60" />
+              </div>
+              <CardContent className="p-4 bg-slate-950/40 space-y-3">
+                {/* Title skeletons */}
+                <div className="space-y-2 min-h-10">
+                  <div className="h-3 w-5/6 bg-slate-800/60 rounded" />
+                  <div className="h-3 w-1/2 bg-slate-800/60 rounded" />
+                </div>
+                {/* Separator and Footer */}
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-900/60">
+                  <div className="h-2 w-20 bg-slate-800/60 rounded" />
+                  <div className="h-2.5 w-16 bg-slate-800/80 rounded" />
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       ) : (

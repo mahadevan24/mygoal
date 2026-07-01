@@ -3,12 +3,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient';
-import ContributionGrid from '@/components/ContributionGrid';
+import ContributionGrid, { ContributionGridSkeleton } from '@/components/ContributionGrid';
 import FocusTimer from '@/components/FocusTimer';
 import VisionBoard from '@/components/VisionBoard';
+import DreamBoard from '@/components/DreamBoard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle } from 'lucide-react';
+import { Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { differenceInDays, parseISO } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -175,9 +176,70 @@ export default function DashboardPage() {
 
   if (loadingSession) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-100 gap-3">
-        <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
-        <span className="text-sm font-semibold tracking-wider text-slate-400">Loading Dashboard...</span>
+      <div className="min-h-screen bg-slate-950 text-slate-100 pb-16 relative overflow-hidden animate-pulse">
+        {/* Visual background accents */}
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/5 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/5 blur-[120px] pointer-events-none" />
+
+        {/* Dashboard Top Header Skeleton */}
+        <header className="border-b border-slate-900 bg-slate-950/50 backdrop-blur-md sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-slate-800/40 w-9 h-9" />
+              <div className="h-5 w-24 bg-slate-800/60 rounded" />
+            </div>
+            <div className="w-10 h-10 rounded-full bg-slate-800/40" />
+          </div>
+        </header>
+
+        {/* Main Container Skeleton */}
+        <div className="max-w-7xl mx-auto px-4 pt-6 space-y-6 relative z-10">
+          {/* Tab Navigation List Skeleton */}
+          <div className="flex justify-center border-b border-slate-900 pb-2">
+            <div className="bg-slate-900/60 p-1 rounded-xl border border-slate-800/80 flex gap-2 w-96 h-10 justify-center items-center">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="h-6 w-20 bg-slate-800/60 rounded-lg" />
+              ))}
+            </div>
+          </div>
+
+          {/* Daily Focus Panel Skeleton */}
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              {/* Focus Timer Skeleton */}
+              <div className="lg:col-span-4 flex flex-col">
+                <div className="h-[432px] rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm p-6 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-800/40">
+                      <div className="space-y-2 flex-1">
+                        <div className="h-4 w-40 bg-slate-800/80 rounded" />
+                        <div className="h-3 w-56 bg-slate-800/60 rounded" />
+                      </div>
+                      <div className="h-6 w-24 bg-slate-800/60 rounded-md" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 pt-2">
+                      <div className="h-8 bg-slate-800/40 rounded-lg" />
+                      <div className="h-8 bg-slate-800/40 rounded-lg" />
+                      <div className="h-8 bg-slate-800/40 rounded-lg" />
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center justify-center space-y-4 py-4">
+                    <div className="w-36 h-36 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center bg-slate-950/60">
+                      <div className="h-6 w-20 bg-slate-800/80 rounded mb-1" />
+                      <div className="h-2 w-10 bg-slate-800/60 rounded" />
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-slate-800/60" />
+                  </div>
+                  <div className="h-10 bg-slate-850 rounded-xl" />
+                </div>
+              </div>
+              {/* Contribution Grid Skeleton */}
+              <div className="lg:col-span-8 flex flex-col">
+                <ContributionGridSkeleton />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -296,6 +358,13 @@ export default function DashboardPage() {
                 <Sparkles className="w-4 h-4 text-violet-400" />
                 Vision Board
               </TabsTrigger>
+              <TabsTrigger
+                value="dreamboard"
+                className="px-4 py-2 rounded-lg data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 text-slate-400 hover:text-slate-200 transition-all font-semibold tracking-wider flex items-center gap-2 cursor-pointer border border-transparent"
+              >
+                <Cloud className="w-4 h-4 text-violet-400" />
+                Dream Board
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -307,7 +376,7 @@ export default function DashboardPage() {
               </div>
               <div className="lg:col-span-8 flex flex-col">
                 {loadingLogs ? (
-                  <div className="h-64 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm animate-pulse flex-1" />
+                  <ContributionGridSkeleton />
                 ) : (
                   <ContributionGrid logs={displayLogs} />
                 )}
@@ -424,6 +493,13 @@ export default function DashboardPage() {
           <TabsContent value="vision" className="space-y-6">
             <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
               <VisionBoard userId={currentUserId} />
+            </div>
+          </TabsContent>
+
+          {/* Dream Board Panel */}
+          <TabsContent value="dreamboard" className="space-y-6">
+            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+              <DreamBoard userId={currentUserId} />
             </div>
           </TabsContent>
         </Tabs>
