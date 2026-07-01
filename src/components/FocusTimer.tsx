@@ -183,7 +183,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
   };
 
   return (
-    <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg">
+    <Card className="h-full bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg flex flex-col">
       <CardHeader className="pb-3 border-b border-slate-800/40 flex flex-row items-center justify-between space-y-0">
         <div>
           <CardTitle className="text-lg text-slate-100 flex items-center gap-2 font-orbitron tracking-wide">
@@ -214,7 +214,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-4 pb-4 space-y-4">
+      <CardContent className="pt-4 pb-4 flex-1 flex flex-col justify-center space-y-4">
         {/* Category Selector Tabs */}
         <div className="grid grid-cols-3 gap-2 font-oxanium">
           {(['dsa', 'lld', 'system_design'] as const).map((cat) => (

@@ -156,7 +156,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="h-full flex flex-col gap-6">
       {/* Streaks and Stats Header */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
@@ -201,7 +201,8 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
       </div>
 
       {/* Contribution Calendar Card */}
-      <div className="p-6 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-md shadow-lg space-y-6">
+      <div className="flex-1 p-6 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col justify-between gap-6">
+        <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-indigo-400" />
@@ -210,15 +211,15 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
           {/* Legend */}
           <div className="flex items-center gap-3 text-[10px] text-slate-400 font-audiowide tracking-wider">
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded bg-slate-900 border border-slate-800" />
+              <div className="w-5 h-5 rounded-[3px] bg-slate-900 border border-slate-800" />
               <span>No study</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded bg-amber-500 border border-amber-400" />
+              <div className="w-5 h-5 rounded-[3px] bg-amber-500 border border-amber-400" />
               <span>Partial</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded bg-emerald-500 border border-emerald-400" />
+              <div className="w-5 h-5 rounded-[3px] bg-emerald-500 border border-emerald-400" />
               <span>Target Met</span>
             </div>
           </div>
@@ -226,16 +227,16 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
 
         {/* The Grid */}
         <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-800">
-          <div className="flex gap-1 min-w-[1080px] justify-between">
+          <div className="flex gap-1 min-w-[1300px] justify-between">
             {/* Weekday indicators */}
             <div className="flex flex-col gap-1 text-[9px] text-slate-500 pr-2 select-none font-audiowide">
-              <div className="h-4 flex items-center">Mon</div>
-              <div className="h-4" />
-              <div className="h-4 flex items-center">Wed</div>
-              <div className="h-4" />
-              <div className="h-4 flex items-center">Fri</div>
-              <div className="h-4" />
-              <div className="h-4 flex items-center">Sun</div>
+              <div className="h-5 flex items-center">Mon</div>
+              <div className="h-5" />
+              <div className="h-5 flex items-center">Wed</div>
+              <div className="h-5" />
+              <div className="h-5 flex items-center">Fri</div>
+              <div className="h-5" />
+              <div className="h-5 flex items-center">Sun</div>
             </div>
 
             {/* Weeks */}
@@ -247,7 +248,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
               return (
                 <div key={wIndex} className="flex flex-col gap-1">
                   {wIndex === 0 && Array.from({ length: paddingOffset }).map((_, padIdx) => (
-                    <div key={`pad-${padIdx}`} className="w-4 h-4 bg-transparent" />
+                    <div key={`pad-${padIdx}`} className="w-5 h-5 bg-transparent" />
                   ))}
                   
                   {week.map((day) => {
@@ -268,7 +269,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
                           });
                         }}
                         onMouseLeave={() => setHoveredDay(null)}
-                        className={`w-4 h-4 rounded-[2px] transition-all cursor-pointer border ${getDayColor(day)}`}
+                        className={`w-5 h-5 rounded-[3px] transition-all cursor-pointer border ${getDayColor(day)}`}
                       />
                     );
                   })}
@@ -277,9 +278,10 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
             })}
           </div>
         </div>
+        </div>
 
         {/* Hover Details Panel */}
-        <div className="border-t border-slate-800/40 pt-4 min-h-16 flex items-start gap-3">
+        <div className="border-t border-slate-800/40 pt-4 min-h-16 flex items-start gap-3 mt-auto shrink-0">
           <Info className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
           <div className="text-xs font-sans">
             {hoveredDay ? (
