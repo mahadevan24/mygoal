@@ -214,7 +214,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-6 space-y-6">
+      <CardContent className="pt-4 pb-4 space-y-4">
         {/* Category Selector Tabs */}
         <div className="grid grid-cols-3 gap-2 font-oxanium">
           {(['dsa', 'lld', 'system_design'] as const).map((cat) => (
@@ -235,17 +235,17 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
 
         {isTimerMode ? (
           /* TIMER SCREEN */
-          <div className="flex flex-col items-center justify-center py-4 space-y-6">
+          <div className="flex flex-col items-center justify-center py-2 space-y-4">
             <div className="relative flex items-center justify-center">
               {/* Outer pulsing ring when timer is running */}
               {isActive && !isPaused && (
                 <div className="absolute inset-0 rounded-full border-2 border-violet-500/30 animate-ping opacity-75" />
               )}
-              <div className="w-48 h-48 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center bg-slate-950/60 shadow-inner z-10">
-                <span className="text-4xl font-mono font-bold text-slate-100 tracking-tight">
+              <div className="w-36 h-36 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center bg-slate-950/60 shadow-inner z-10">
+                <span className="text-3xl font-mono font-bold text-slate-100 tracking-tight">
                   {formatTime(seconds)}
                 </span>
-                <span className="text-[10px] uppercase tracking-widest text-slate-500 mt-1 font-semibold font-audiowide">
+                <span className="text-[9px] uppercase tracking-widest text-slate-500 mt-1 font-semibold font-audiowide">
                   {category === 'system_design' ? 'System Design' : category.toUpperCase()}
                 </span>
               </div>

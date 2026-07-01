@@ -210,15 +210,15 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
           {/* Legend */}
           <div className="flex items-center gap-3 text-[10px] text-slate-400 font-audiowide tracking-wider">
             <div className="flex items-center gap-1.5">
-              <div className="w-3.5 h-3.5 rounded bg-slate-900 border border-slate-800" />
+              <div className="w-4 h-4 rounded bg-slate-900 border border-slate-800" />
               <span>No study</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3.5 h-3.5 rounded bg-amber-500 border border-amber-400" />
+              <div className="w-4 h-4 rounded bg-amber-500 border border-amber-400" />
               <span>Partial</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3.5 h-3.5 rounded bg-emerald-500 border border-emerald-400" />
+              <div className="w-4 h-4 rounded bg-emerald-500 border border-emerald-400" />
               <span>Target Met</span>
             </div>
           </div>
@@ -226,13 +226,16 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
 
         {/* The Grid */}
         <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-800">
-          <div className="flex gap-1 min-w-[720px] justify-between">
+          <div className="flex gap-1 min-w-[1080px] justify-between">
             {/* Weekday indicators */}
-            <div className="flex flex-col justify-between text-[9px] text-slate-500 pr-2 pt-4 pb-2 select-none font-audiowide">
-              <span>Mon</span>
-              <span>Wed</span>
-              <span>Fri</span>
-              <span>Sun</span>
+            <div className="flex flex-col gap-1 text-[9px] text-slate-500 pr-2 select-none font-audiowide">
+              <div className="h-4 flex items-center">Mon</div>
+              <div className="h-4" />
+              <div className="h-4 flex items-center">Wed</div>
+              <div className="h-4" />
+              <div className="h-4 flex items-center">Fri</div>
+              <div className="h-4" />
+              <div className="h-4 flex items-center">Sun</div>
             </div>
 
             {/* Weeks */}
@@ -244,7 +247,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
               return (
                 <div key={wIndex} className="flex flex-col gap-1">
                   {wIndex === 0 && Array.from({ length: paddingOffset }).map((_, padIdx) => (
-                    <div key={`pad-${padIdx}`} className="w-3 h-3 bg-transparent" />
+                    <div key={`pad-${padIdx}`} className="w-4 h-4 bg-transparent" />
                   ))}
                   
                   {week.map((day) => {
@@ -265,7 +268,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
                           });
                         }}
                         onMouseLeave={() => setHoveredDay(null)}
-                        className={`w-3 h-3 rounded-[2px] transition-all cursor-pointer border ${getDayColor(day)}`}
+                        className={`w-4 h-4 rounded-[2px] transition-all cursor-pointer border ${getDayColor(day)}`}
                       />
                     );
                   })}
