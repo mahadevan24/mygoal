@@ -1,0 +1,313 @@
+'use client';
+
+import React, { useState, useMemo } from 'react';
+import { subDays, format, eachDayOfInterval, startOfDay, isSameDay } from 'date-fns';
+import { Flame, Info, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
+
+interface StudyLog {
+  date: string;
+  dsa_minutes: number;
+  lld_minutes: number;
+  system_design_minutes: number;
+  notes?: string;
+}
+
+interface ContributionGridProps {
+  logs: StudyLog[];
+}
+
+export default function ContributionGrid({ logs }: ContributionGridProps) {
+  const [hoveredDay, setHoveredDay] = useState<{
+    date: Date;
+    dsa: number;
+    lld: number;
+    sd: number;
+    notes?: string;
+  } | null>(null);
+
+  // Map database logs into a lookup table by date string (YYYY-MM-DD)
+  const logMap = useMemo(() => {
+    const map: Record<string, StudyLog> = {};
+    logs.forEach((log) => {
+      // Ensure date format is YYYY-MM-DD
+      const dateStr = typeof log.date === 'string' ? log.date.split('T')[0] : format(new Date(log.date), 'yyyy-MM-dd');
+      map[dateStr] = log;
+    });
+    return map;
+  }, [logs]);
+
+  // Generate rolling 365 days ending today
+  const days = useMemo(() => {
+    const today = startOfDay(new Date());
+    const startDate = subDays(today, 364); // 365 days total
+    return eachDayOfInterval({ start: startDate, end: today });
+  }, []);
+
+  // Compute streaks
+  const streakStats = useMemo(() => {
+    let currentStreak = 0;
+    let maxStreak = 0;
+    let completedDays = 0;
+    let partialDays = 0;
+
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
+    const yesterdayStr = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+
+    // Go back in time starting from today to calculate current streak
+    let tempCurrentStreak = 0;
+    let checkedDate = new Date();
+    
+    // We only break the current streak if they missed today AND yesterday (meaning today is in progress)
+    // or if they missed yesterday. Let's trace back:
+    let dayIndex = 0;
+    let keepChecking = true;
+
+    while (keepChecking && dayIndex < 365) {
+      const dateToCheck = subDays(new Date(), dayIndex);
+      const dateStr = format(dateToCheck, 'yyyy-MM-dd');
+      const log = logMap[dateStr];
+      const totalMinutes = log ? (log.dsa_minutes + log.lld_minutes + log.system_design_minutes) : 0;
+      
+      if (totalMinutes >= 180) { // 3 hours
+        tempCurrentStreak++;
+      } else {
+        // If they haven't completed today yet, don't break the streak immediately unless yesterday was also missed
+        if (dayIndex === 0) {
+          // Today not met. Keep checking yesterday to see if current streak is still alive.
+        } else {
+          keepChecking = false;
+        }
+      }
+      dayIndex++;
+    }
+    
+    currentStreak = tempCurrentStreak;
+
+    // Calculate maximum streak and total completions over the 365 days
+    let runningStreak = 0;
+    // Iterate from oldest to newest
+    for (let i = 364; i >= 0; i--) {
+      const dateStr = format(days[i], 'yyyy-MM-dd');
+      const log = logMap[dateStr];
+      const totalMinutes = log ? (log.dsa_minutes + log.lld_minutes + log.system_design_minutes) : 0;
+
+      if (totalMinutes >= 180) {
+        runningStreak++;
+        completedDays++;
+        if (runningStreak > maxStreak) {
+          maxStreak = runningStreak;
+        }
+      } else {
+        if (totalMinutes > 0) {
+          partialDays++;
+        }
+        runningStreak = 0;
+      }
+    }
+
+    return {
+      currentStreak,
+      maxStreak,
+      completedDays,
+      partialDays
+    };
+  }, [days, logMap]);
+
+  // Organize days into columns (weeks)
+  const gridColumns = useMemo(() => {
+    const columns: Date[][] = [];
+    let currentWeek: Date[] = [];
+
+    days.forEach((day) => {
+      currentWeek.push(day);
+      // If we reach 7 days or Saturday, push the week and start a new one
+      // day.getDay() === 6 is Saturday
+      if (day.getDay() === 6 || currentWeek.length === 7) {
+        columns.push(currentWeek);
+        currentWeek = [];
+      }
+    });
+
+    if (currentWeek.length > 0) {
+      columns.push(currentWeek);
+    }
+
+    return columns;
+  }, [days]);
+
+  // Color selection helper
+  const getDayColor = (date: Date) => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    const log = logMap[dateStr];
+    
+    if (!log) {
+      return 'bg-slate-900 border-slate-950 hover:border-slate-700';
+    }
+
+    const totalMin = log.dsa_minutes + log.lld_minutes + log.system_design_minutes;
+    if (totalMin >= 180) {
+      return 'bg-emerald-500 border-emerald-400 hover:border-white shadow-sm shadow-emerald-550/20'; // Target Met
+    }
+    if (totalMin > 0) {
+      return 'bg-amber-500 border-amber-400 hover:border-white shadow-sm shadow-amber-550/20'; // Target Missed
+    }
+    
+    return 'bg-slate-900 border-slate-950 hover:border-slate-700';
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Streaks and Stats Header */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
+            <Flame className="w-5 h-5 fill-current" />
+          </div>
+          <div>
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Current Streak</span>
+            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.currentStreak} Days</span>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
+            <Flame className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Longest Streak</span>
+            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.maxStreak} Days</span>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Completed Days</span>
+            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.completedDays} Days</span>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <AlertTriangle className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Partial Days</span>
+            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.partialDays} Days</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Contribution Calendar Card */}
+      <div className="p-6 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-md shadow-lg space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-indigo-400" />
+            <h3 className="text-lg font-bold text-slate-100 font-orbitron tracking-wide">Preparation Contribution Grid</h3>
+          </div>
+          {/* Legend */}
+          <div className="flex items-center gap-3 text-[10px] text-slate-400 font-audiowide tracking-wider">
+            <div className="flex items-center gap-1.5">
+              <div className="w-3.5 h-3.5 rounded bg-slate-900 border border-slate-800" />
+              <span>No study</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3.5 h-3.5 rounded bg-amber-500 border border-amber-400" />
+              <span>Partial</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3.5 h-3.5 rounded bg-emerald-500 border border-emerald-400" />
+              <span>Target Met</span>
+            </div>
+          </div>
+        </div>
+
+        {/* The Grid */}
+        <div className="overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-800">
+          <div className="flex gap-1 min-w-[720px] justify-between">
+            {/* Weekday indicators */}
+            <div className="flex flex-col justify-between text-[9px] text-slate-500 pr-2 pt-4 pb-2 select-none font-audiowide">
+              <span>Mon</span>
+              <span>Wed</span>
+              <span>Fri</span>
+              <span>Sun</span>
+            </div>
+
+            {/* Weeks */}
+            {gridColumns.map((week, wIndex) => {
+              // Align first week blocks vertically by padding missing top cells if it does not start on Sunday (day 0) or Monday (day 1)
+              const firstDayOfWeek = week[0]?.getDay() || 0;
+              const paddingOffset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1; // Align Mon=0, Tue=1... Sun=6
+
+              return (
+                <div key={wIndex} className="flex flex-col gap-1">
+                  {wIndex === 0 && Array.from({ length: paddingOffset }).map((_, padIdx) => (
+                    <div key={`pad-${padIdx}`} className="w-3 h-3 bg-transparent" />
+                  ))}
+                  
+                  {week.map((day) => {
+                    const dateStr = format(day, 'yyyy-MM-dd');
+                    const log = logMap[dateStr];
+                    
+                    return (
+                      <div
+                        key={dateStr}
+                        onMouseEnter={() => {
+                          const total = log ? (log.dsa_minutes + log.lld_minutes + log.system_design_minutes) : 0;
+                          setHoveredDay({
+                            date: day,
+                            dsa: log?.dsa_minutes || 0,
+                            lld: log?.lld_minutes || 0,
+                            sd: log?.system_design_minutes || 0,
+                            notes: log?.notes
+                          });
+                        }}
+                        onMouseLeave={() => setHoveredDay(null)}
+                        className={`w-3 h-3 rounded-[2px] transition-all cursor-pointer border ${getDayColor(day)}`}
+                      />
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Hover Details Panel */}
+        <div className="border-t border-slate-800/40 pt-4 min-h-16 flex items-start gap-3">
+          <Info className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+          <div className="text-xs font-sans">
+            {hoveredDay ? (
+              <div className="space-y-1">
+                <span className="font-bold text-slate-200 font-orbitron tracking-wider">
+                  {format(hoveredDay.date, 'MMMM dd, yyyy')}
+                </span>
+                <div className="flex gap-4 text-slate-400 mt-1 font-mono text-[11px] tracking-tight">
+                  <span>DSA: <strong className="text-slate-200 font-semibold font-mono">{(hoveredDay.dsa / 60).toFixed(1)}h</strong> ({hoveredDay.dsa}m)</span>
+                  <span>LLD: <strong className="text-slate-200 font-semibold font-mono">{(hoveredDay.lld / 60).toFixed(1)}h</strong> ({hoveredDay.lld}m)</span>
+                  <span>Sys Design: <strong className="text-slate-200 font-semibold font-mono">{(hoveredDay.sd / 60).toFixed(1)}h</strong> ({hoveredDay.sd}m)</span>
+                  <span className="border-l border-slate-800 pl-4">
+                    Total: <strong className={`font-semibold font-mono ${hoveredDay.dsa + hoveredDay.lld + hoveredDay.sd >= 180 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                      {((hoveredDay.dsa + hoveredDay.lld + hoveredDay.sd) / 60).toFixed(1)} hrs
+                    </strong>
+                  </span>
+                </div>
+                {hoveredDay.notes && (
+                  <p className="text-[11px] text-slate-500 italic mt-1.5 max-w-3xl line-clamp-2">
+                    Notes: {hoveredDay.notes}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="text-slate-500 pt-0.5">
+                Hover over any contribution grid square to view detailed preparation hours and session notes.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
