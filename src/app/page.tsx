@@ -33,7 +33,8 @@ export default function DashboardPage() {
   const [isClearConfirmOpen, setIsClearConfirmOpen] = useState<boolean>(false);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileDropdownRef = useRef<HTMLDivElement>(null);
+  const desktopDropdownRef = useRef<HTMLDivElement>(null);
 
   // User initials for sidebar avatar
   const userEmailInitials = React.useMemo(() => {
@@ -45,7 +46,10 @@ export default function DashboardPage() {
   // Click outside to close profile dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const clickedMobile = mobileDropdownRef.current && mobileDropdownRef.current.contains(target);
+      const clickedDesktop = desktopDropdownRef.current && desktopDropdownRef.current.contains(target);
+      if (!clickedMobile && !clickedDesktop) {
         setIsProfileOpen(false);
       }
     }
@@ -277,7 +281,7 @@ export default function DashboardPage() {
           <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
             MyGoal
           </span>
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative" ref={mobileDropdownRef}>
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               className="relative flex items-center justify-center w-9 h-9 rounded-full border border-orange-500/35 hover:border-orange-500/80 bg-slate-900/60 hover:bg-slate-900 transition-all duration-300 text-orange-400 cursor-pointer"
@@ -322,83 +326,87 @@ export default function DashboardPage() {
         </div>
 
         {/* Mobile Slide-out Drawer Overlay */}
-        {isMobileMenuOpen && (
+        <div
+          className={cn(
+            "md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-all duration-300",
+            isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          )}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
           <div
-            className="md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-            onClick={() => setIsMobileMenuOpen(false)}
+            className={cn(
+              "absolute top-0 left-0 h-full w-72 bg-slate-950/95 border-r border-slate-800 backdrop-blur-md shadow-2xl shadow-orange-950/20 flex flex-col p-4 transition-transform duration-300 ease-in-out",
+              isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+            )}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="absolute top-0 left-0 h-full w-72 bg-slate-950/95 border-r border-slate-800 backdrop-blur-md shadow-2xl shadow-orange-950/20 flex flex-col p-4 animate-in slide-in-from-left duration-300"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Drawer Header */}
-              <div className="flex items-center justify-between mb-6">
-                <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
-                  MyGoal
-                </span>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-orange-400 cursor-pointer transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between mb-6">
+              <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+                MyGoal
+              </span>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-orange-400 cursor-pointer transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-              {/* Drawer Navigation */}
-              <TabsList className="bg-transparent !p-0 !w-full flex flex-col gap-1 items-stretch font-orbitron text-xs">
-                <TabsTrigger
-                  value="focus"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
-                >
-                  <Crosshair className="w-5 h-5 text-orange-400 shrink-0" />
-                  <span className="text-xs">Daily Focus</span>
-                </TabsTrigger>
+            {/* Drawer Navigation */}
+            <TabsList className="bg-transparent !p-0 !w-full flex flex-col gap-1 items-stretch font-orbitron text-xs">
+              <TabsTrigger
+                value="focus"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+              >
+                <Crosshair className="w-5 h-5 text-orange-400 shrink-0" />
+                <span className="text-xs">Daily Focus</span>
+              </TabsTrigger>
 
-                <TabsTrigger
-                  value="hub"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
-                >
-                  <Target className="w-5 h-5 text-orange-400 shrink-0" />
-                  <span className="text-xs">Preparation Hub</span>
-                </TabsTrigger>
+              <TabsTrigger
+                value="hub"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+              >
+                <Target className="w-5 h-5 text-orange-400 shrink-0" />
+                <span className="text-xs">Preparation Hub</span>
+              </TabsTrigger>
 
-                <TabsTrigger
-                  value="vision"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
-                >
-                  <Sparkles className="w-5 h-5 text-orange-400 shrink-0" />
-                  <span className="text-xs">Vision Board</span>
-                </TabsTrigger>
+              <TabsTrigger
+                value="vision"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+              >
+                <Sparkles className="w-5 h-5 text-orange-400 shrink-0" />
+                <span className="text-xs">Vision Board</span>
+              </TabsTrigger>
 
-                <TabsTrigger
-                  value="dreamboard"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
-                >
-                  <Cloud className="w-5 h-5 text-orange-400 shrink-0" />
-                  <span className="text-xs">Dream Board</span>
-                </TabsTrigger>
-              </TabsList>
+              <TabsTrigger
+                value="dreamboard"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+              >
+                <Cloud className="w-5 h-5 text-orange-400 shrink-0" />
+                <span className="text-xs">Dream Board</span>
+              </TabsTrigger>
+            </TabsList>
 
-              {/* Drawer Bottom: User info */}
-              <div className="mt-auto pt-6 border-t border-slate-800/40">
-                <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/20 border border-slate-850">
-                  <div className="relative flex items-center justify-center w-8 h-8 rounded-full border border-orange-500/35 bg-slate-950 text-orange-400 font-audiowide text-xs shrink-0">
-                    {userEmailInitials}
-                    <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950" />
-                  </div>
-                  <div className="flex flex-col min-w-0 text-left">
-                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide leading-none mb-0.5">User</span>
-                    <span className="text-[10px] text-slate-300 font-semibold font-mono truncate w-40 leading-none">{user ? user.email : 'Guest Mode'}</span>
-                  </div>
+            {/* Drawer Bottom: User info */}
+            <div className="mt-auto pt-6 border-t border-slate-800/40">
+              <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/20 border border-slate-850">
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-full border border-orange-500/35 bg-slate-950 text-orange-400 font-audiowide text-xs shrink-0">
+                  {userEmailInitials}
+                  <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950" />
+                </div>
+                <div className="flex flex-col min-w-0 text-left">
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide leading-none mb-0.5">User</span>
+                  <span className="text-[10px] text-slate-300 font-semibold font-mono truncate w-40 leading-none">{user ? user.email : 'Guest Mode'}</span>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Desktop Collapsible Sidebar - hidden on mobile */}
         <aside
@@ -503,7 +511,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Sidebar Bottom: Profile settings */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative" ref={desktopDropdownRef}>
             {isSidebarExpanded ? (
               <div
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
