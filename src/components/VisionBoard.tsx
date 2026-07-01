@@ -157,7 +157,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2 font-orbitron tracking-wide">
-            <Flame className="w-5 h-5 text-indigo-400" />
+            <Flame className="w-5 h-5 text-amber-400" />
             My Vision Board
           </h2>
           <p className="text-slate-400 text-sm">
@@ -167,7 +167,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
 
         {isSupabaseConfigured && (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger render={<Button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider border-none" />}>
+            <DialogTrigger render={<Button className="bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider border border-orange-400 shadow-sm" />}>
               <Plus className="w-4 h-4" /> Add Goal Card
             </DialogTrigger>
             <DialogContent className="bg-slate-900 border border-slate-800 text-slate-100 max-w-sm">
@@ -253,7 +253,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
                 <Button
                   type="submit"
                   disabled={uploading}
-                  className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium font-audiowide tracking-wider text-[11px] py-2 border-none"
+                  className="w-full bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 font-medium font-audiowide tracking-wider text-[11px] py-2 border border-orange-400 shadow-sm"
                 >
                   {uploading ? 'Pinning...' : 'Pin to Board'}
                 </Button>
@@ -295,7 +295,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
           {items.map((item) => (
             <Card
               key={item.id}
-              className="group overflow-hidden bg-slate-950/40 border-slate-800/80 hover:border-indigo-500/30 transition-all duration-300 relative shadow-lg"
+              className="group overflow-hidden bg-slate-950/40 border-slate-800/80 hover:border-amber-500/30 transition-all duration-300 relative shadow-lg"
             >
               <div 
                 className="h-44 w-full relative overflow-hidden bg-slate-900 cursor-pointer"
@@ -320,20 +320,20 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
 
                 {/* Company Tag */}
                 {item.target_company && (
-                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 backdrop-blur-md font-audiowide">
+                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-950/80 text-amber-300 border border-amber-500/30 backdrop-blur-md font-audiowide">
                     {item.target_company}
                   </span>
                 )}
               </div>
               <CardContent className="p-4 bg-slate-950/40">
-                <p className="text-sm font-semibold text-slate-200 line-clamp-2 min-h-10 group-hover:text-indigo-300 transition-colors">
+                <p className="text-sm font-semibold text-slate-200 line-clamp-2 min-h-10 group-hover:text-amber-300 transition-colors">
                   {item.title}
                 </p>
                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-900/60">
                   <span className="text-[9px] text-slate-500 font-mono">
                     Pinned on {new Date(item.created_at).toLocaleDateString()}
                   </span>
-                  <span className="text-violet-400 text-[10px] flex items-center gap-1 font-audiowide tracking-wider">
+                  <span className="text-orange-400 text-[10px] flex items-center gap-1 font-audiowide tracking-wider">
                     <Sparkles className="w-3.5 h-3.5" /> Target {item.target_year || 2027}
                   </span>
                 </div>
@@ -343,7 +343,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
 
           {items.length === 0 && (
             <div className="col-span-full py-12 px-6 rounded-xl border border-dashed border-slate-800/80 bg-slate-900/10 text-center flex flex-col items-center justify-center gap-3">
-              <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/10 animate-pulse">
+              <div className="p-3 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/10 animate-pulse">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div className="space-y-1.5 max-w-sm">

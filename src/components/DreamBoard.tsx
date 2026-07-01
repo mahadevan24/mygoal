@@ -208,7 +208,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2 font-orbitron tracking-wide">
-            <Cloud className="w-5 h-5 text-indigo-400 fill-current/10 animate-pulse" />
+            <Cloud className="w-5 h-5 text-amber-400 fill-current/10 animate-pulse" />
             Dream Board
           </h2>
           <p className="text-slate-400 text-sm">
@@ -217,7 +217,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
         </div>
 
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-          <DialogTrigger render={<Button className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider border-none" />}>
+          <DialogTrigger render={<Button className="bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider border border-orange-400 shadow-sm" />}>
             <Plus className="w-4 h-4" /> Add Dream Card
           </DialogTrigger>
           <DialogContent className="bg-slate-900 border border-slate-800 text-slate-100 max-w-sm">
@@ -246,7 +246,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
                   placeholder="e.g. I work with absolute focus. I design scalable code. I live a balanced and healthy life with my family in California."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full min-h-20 bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-100 focus:outline-none focus:border-violet-500 transition-colors font-sans placeholder:text-slate-650"
+                  className="w-full min-h-20 bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-100 focus:outline-none focus:border-orange-500 transition-colors font-sans placeholder:text-slate-650"
                 />
               </div>
               <div className="space-y-1.5">
@@ -280,7 +280,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
               <Button
                 type="submit"
                 disabled={uploading}
-                className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium font-audiowide tracking-wider text-[11px] py-2 border-none"
+                className="w-full bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 font-medium font-audiowide tracking-wider text-[11px] py-2 border border-orange-400 shadow-sm"
               >
                 {uploading ? 'Manifesting...' : 'Pin to Dream Board'}
               </Button>
@@ -322,7 +322,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
             <Card
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="group overflow-hidden bg-slate-950/40 border-slate-800/80 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-950/20 transition-all duration-300 relative cursor-pointer flex flex-col h-72"
+              className="group overflow-hidden bg-slate-950/40 border-slate-800/80 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-950/20 transition-all duration-300 relative cursor-pointer flex flex-col h-72"
             >
               <div className="h-44 w-full relative overflow-hidden bg-slate-900">
                 <img
@@ -347,14 +347,14 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
                 </span>
               </div>
               <CardContent className="p-4 flex-1 flex flex-col justify-between bg-slate-950/20">
-                <p className="text-xs font-semibold text-slate-200 line-clamp-3 group-hover:text-indigo-300 transition-colors font-sans leading-relaxed">
+                <p className="text-xs font-semibold text-slate-200 line-clamp-3 group-hover:text-amber-300 transition-colors font-sans leading-relaxed">
                   {item.title}
                 </p>
                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-900/60 text-[9px] text-slate-500 font-audiowide tracking-widest">
-                  <span className="flex items-center gap-1 text-violet-400/80 uppercase">
-                    <Sparkles className="w-3 h-3 text-violet-400" /> Manifesting
+                  <span className="flex items-center gap-1 text-orange-400/80 uppercase">
+                    <Sparkles className="w-3 h-3 text-orange-400" /> Manifesting
                   </span>
-                  <span className="flex items-center gap-1 group-hover:text-indigo-400 transition-colors font-semibold">
+                  <span className="flex items-center gap-1 group-hover:text-amber-400 transition-colors font-semibold">
                     <Maximize2 className="w-3 h-3" /> View
                   </span>
                 </div>
@@ -364,7 +364,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
 
           {items.length === 0 && (
             <div className="col-span-full py-16 px-6 rounded-xl border border-dashed border-slate-850 bg-slate-900/5 text-center flex flex-col items-center justify-center gap-4">
-              <div className="p-3.5 rounded-2xl bg-indigo-500/5 text-indigo-400 border border-indigo-500/10 animate-pulse">
+              <div className="p-3.5 rounded-2xl bg-amber-500/5 text-amber-400 border border-amber-500/10 animate-pulse">
                 <Cloud className="w-6 h-6 fill-current/10" />
               </div>
               <div className="space-y-1.5 max-w-sm">
@@ -383,7 +383,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
         <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
           <DialogContent 
             showCloseButton={false}
-            className="bg-slate-950/95 border border-slate-900 text-slate-100 max-w-lg p-0 overflow-hidden backdrop-blur-md rounded-2xl shadow-2xl shadow-violet-950/30"
+            className="bg-slate-950/95 border border-slate-900 text-slate-100 max-w-lg p-0 overflow-hidden backdrop-blur-md rounded-2xl shadow-2xl shadow-orange-950/30"
           >
             <div className="relative max-h-[50vh] w-full overflow-hidden bg-slate-900 flex justify-center items-center">
               <img
@@ -402,10 +402,10 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
             <div className="p-6 space-y-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-violet-400 animate-pulse" />
-                  <span className="text-[10px] text-violet-400 font-bold uppercase tracking-widest font-audiowide">Manifestation Statement</span>
+                  <Sparkles className="w-4 h-4 text-orange-400 animate-pulse" />
+                  <span className="text-[10px] text-orange-400 font-bold uppercase tracking-widest font-audiowide">Manifestation Statement</span>
                 </div>
-                <h3 className="text-lg font-black text-slate-100 font-orbitron tracking-wide leading-relaxed bg-gradient-to-r from-slate-100 to-indigo-200 bg-clip-text text-transparent">
+                <h3 className="text-lg font-black text-slate-100 font-orbitron tracking-wide leading-relaxed bg-gradient-to-r from-slate-100 to-amber-200 bg-clip-text text-transparent">
                   {selectedItem.title}
                 </h3>
               </div>
@@ -421,7 +421,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
 
               <div className="flex justify-between items-center text-[9px] text-slate-550 pt-4 border-t border-slate-900/80 font-mono">
                 <span>Pinned on {new Date(selectedItem.created_at).toLocaleDateString()}</span>
-                <span className="font-audiowide text-[8px] tracking-widest text-indigo-400/70 uppercase">Focused Manifestation</span>
+                <span className="font-audiowide text-[8px] tracking-widest text-amber-400/70 uppercase">Focused Manifestation</span>
               </div>
             </div>
           </DialogContent>

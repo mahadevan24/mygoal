@@ -187,8 +187,8 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-slate-950 text-slate-100 flex relative overflow-hidden animate-pulse">
         {/* Visual background accents */}
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/5 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/5 blur-[120px] pointer-events-none" />
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-orange-600/5 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/5 blur-[120px] pointer-events-none" />
 
         {/* Sidebar Skeleton */}
         <aside className="w-16 h-screen border-r border-slate-900 bg-slate-950/40 backdrop-blur-md flex flex-col justify-between p-3 shrink-0">
@@ -261,8 +261,8 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 flex relative overflow-hidden">
       {/* Visual background accents */}
-      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/5 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-orange-600/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/5 blur-[120px] pointer-events-none" />
 
       <Tabs defaultValue="focus" orientation="vertical" className="flex w-full min-h-screen">
         {/* Collapsible Sidebar */}
@@ -278,13 +278,13 @@ export default function DashboardPage() {
               {isSidebarExpanded ? (
                 <>
                   <div className="flex items-center px-1">
-                    <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-slate-100 to-indigo-200 bg-clip-text text-transparent">
+                    <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-slate-100 to-amber-200 bg-clip-text text-transparent">
                       MyGoal
                     </span>
                   </div>
                   <button
                     onClick={() => setIsSidebarExpanded(false)}
-                    className="p-1.5 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-violet-400 cursor-pointer transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-orange-400 cursor-pointer transition-colors"
                   >
                     <PanelLeftClose className="w-4 h-4" />
                   </button>
@@ -292,7 +292,7 @@ export default function DashboardPage() {
               ) : (
                 <button
                   onClick={() => setIsSidebarExpanded(true)}
-                  className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-900 text-slate-400 hover:text-violet-400 cursor-pointer transition-colors"
+                  className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-900 text-slate-400 hover:text-orange-400 cursor-pointer transition-colors"
                 >
                   <PanelLeftOpen className="w-5 h-5" />
                 </button>
@@ -304,11 +304,11 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="focus"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
-                <Flame className="w-5 h-5 text-violet-400 shrink-0 fill-current animate-pulse" />
+                <Flame className="w-5 h-5 text-orange-400 shrink-0 fill-current animate-pulse" />
                 {isSidebarExpanded && <span className="text-xs transition-all duration-300">Daily Focus</span>}
                 {!isSidebarExpanded && (
                   <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
@@ -320,11 +320,11 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="hub"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
-                <Target className="w-5 h-5 text-violet-400 shrink-0" />
+                <Target className="w-5 h-5 text-orange-400 shrink-0" />
                 {isSidebarExpanded && <span className="text-xs transition-all duration-300">Preparation Hub</span>}
                 {!isSidebarExpanded && (
                   <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
@@ -336,11 +336,11 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="vision"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
-                <Sparkles className="w-5 h-5 text-violet-400 shrink-0" />
+                <Sparkles className="w-5 h-5 text-orange-400 shrink-0" />
                 {isSidebarExpanded && <span className="text-xs transition-all duration-300">Vision Board</span>}
                 {!isSidebarExpanded && (
                   <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
@@ -352,11 +352,11 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="dreamboard"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
-                <Cloud className="w-5 h-5 text-violet-400 shrink-0" />
+                <Cloud className="w-5 h-5 text-orange-400 shrink-0" />
                 {isSidebarExpanded && <span className="text-xs transition-all duration-300">Dream Board</span>}
                 {!isSidebarExpanded && (
                   <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
@@ -372,9 +372,9 @@ export default function DashboardPage() {
             {isSidebarExpanded ? (
               <div
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/20 border border-slate-850 hover:bg-slate-900/40 hover:border-violet-500/20 transition-all duration-300 w-full cursor-pointer"
+                className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/20 border border-slate-850 hover:bg-slate-900/40 hover:border-orange-500/20 transition-all duration-300 w-full cursor-pointer"
               >
-                <div className="relative flex items-center justify-center w-8 h-8 rounded-full border border-violet-500/35 bg-slate-950 text-violet-400 font-audiowide text-xs shrink-0">
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-full border border-orange-500/35 bg-slate-950 text-orange-400 font-audiowide text-xs shrink-0">
                   {userEmailInitials}
                   <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950" />
                 </div>
@@ -387,9 +387,9 @@ export default function DashboardPage() {
               <div className="flex justify-center">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="relative flex items-center justify-center w-10 h-10 rounded-full border border-violet-500/35 hover:border-violet-500/80 bg-slate-900/60 hover:bg-slate-900 transition-all duration-300 text-violet-400 cursor-pointer"
+                  className="relative flex items-center justify-center w-10 h-10 rounded-full border border-orange-500/35 hover:border-orange-500/80 bg-slate-900/60 hover:bg-slate-900 transition-all duration-300 text-orange-400 cursor-pointer"
                 >
-                  <User className="w-5 h-5 text-violet-400" />
+                  <User className="w-5 h-5 text-orange-400" />
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-950" />
                 </button>
               </div>
@@ -399,7 +399,7 @@ export default function DashboardPage() {
             {isProfileOpen && (
               <div
                 className={cn(
-                  "absolute rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md shadow-2xl shadow-violet-950/30 py-2 z-50 animate-in fade-in duration-200 w-64",
+                  "absolute rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md shadow-2xl shadow-orange-950/30 py-2 z-50 animate-in fade-in duration-200 w-64",
                   isSidebarExpanded ? "bottom-14 left-0" : "bottom-0 left-14"
                 )}
               >
@@ -413,9 +413,9 @@ export default function DashboardPage() {
                       setIsProfileOpen(false);
                       setIsClearConfirmOpen(true);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
                   >
-                    <Trash2 className="w-4 h-4 text-violet-400" />
+                    <Trash2 className="w-4 h-4 text-orange-400" />
                     Clear All Counts
                   </button>
                   {isSupabaseConfigured && (
@@ -424,9 +424,9 @@ export default function DashboardPage() {
                         setIsProfileOpen(false);
                         handleLogout();
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
                     >
-                      <LogOut className="w-4 h-4 text-violet-400" />
+                      <LogOut className="w-4 h-4 text-orange-400" />
                       Log Out
                     </button>
                   )}
@@ -477,32 +477,32 @@ export default function DashboardPage() {
             <TabsContent value="hub" className="space-y-6 outline-none">
               {/* Header banner */}
               <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-violet-600/5 blur-[80px] pointer-events-none" />
+                <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-orange-600/5 blur-[80px] pointer-events-none" />
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Target className="w-6 h-6 text-violet-400" />
+                    <Target className="w-6 h-6 text-orange-400" />
                     <h2 className="text-xl font-bold text-slate-100 font-orbitron tracking-wide">Preparation Hub</h2>
                   </div>
                   <p className="text-slate-400 text-sm max-w-2xl leading-relaxed">
                     Land your dream role at <strong className="text-slate-200">Google, Amazon, or Microsoft</strong>. Success is built on daily execution. Monitor your progress and metrics below.
                   </p>
                 </div>
-                <div className="bg-slate-950/85 p-4 rounded-xl border border-violet-500/20 flex flex-col items-center justify-center min-w-[200px] text-center shadow-lg shadow-violet-950/20">
+                <div className="bg-slate-950/85 p-4 rounded-xl border border-orange-500/20 flex flex-col items-center justify-center min-w-[200px] text-center shadow-lg shadow-orange-950/20">
                   <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide mb-1">Target Date Countdown</span>
                   <span className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{daysRemaining}</span>
-                  <span className="text-[10px] text-violet-400 font-bold uppercase tracking-wider font-orbitron mt-1">Days Remaining</span>
+                  <span className="text-[10px] text-orange-400 font-bold uppercase tracking-wider font-orbitron mt-1">Days Remaining</span>
                 </div>
               </div>
 
               {/* Category Details & Stats */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Total Prep */}
-                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-violet-600/5 rounded-bl-full pointer-events-none group-hover:bg-violet-600/10 transition-all" />
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-orange-500/30 transition-all duration-300">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-orange-600/5 rounded-bl-full pointer-events-none group-hover:bg-orange-600/10 transition-all" />
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">Total Preparation</span>
-                      <div className="p-1.5 rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
+                      <div className="p-1.5 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
                         <Flame className="w-4 h-4 fill-current animate-pulse" />
                       </div>
                     </div>
@@ -517,12 +517,12 @@ export default function DashboardPage() {
                 </Card>
 
                 {/* DSA Logs */}
-                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-600/5 rounded-bl-full pointer-events-none group-hover:bg-indigo-600/10 transition-all" />
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-orange-500/30 transition-all duration-300">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-amber-600/5 rounded-bl-full pointer-events-none group-hover:bg-amber-600/10 transition-all" />
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">DSA Logs</span>
-                      <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                      <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
                         <Target className="w-4 h-4" />
                       </div>
                     </div>
@@ -537,12 +537,12 @@ export default function DashboardPage() {
                 </Card>
 
                 {/* LLD Logs */}
-                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/5 rounded-bl-full pointer-events-none group-hover:bg-purple-600/10 transition-all" />
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-orange-500/30 transition-all duration-300">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-orange-600/5 rounded-bl-full pointer-events-none group-hover:bg-orange-600/10 transition-all" />
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">LLD Logs</span>
-                      <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                      <div className="p-1.5 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
                         <Flame className="w-4 h-4" />
                       </div>
                     </div>
@@ -557,7 +557,7 @@ export default function DashboardPage() {
                 </Card>
 
                 {/* Sys Design Logs */}
-                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-orange-500/30 transition-all duration-300">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-pink-600/5 rounded-bl-full pointer-events-none group-hover:bg-pink-600/10 transition-all" />
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-center justify-between">
@@ -597,7 +597,7 @@ export default function DashboardPage() {
 
       {/* Clear Counts Confirmation Modal */}
       <Dialog open={isClearConfirmOpen} onOpenChange={setIsClearConfirmOpen}>
-        <DialogContent className="bg-slate-900/95 border border-slate-800 text-slate-100 max-w-sm backdrop-blur-md shadow-2xl shadow-violet-950/20 rounded-xl overflow-hidden p-6 gap-6">
+        <DialogContent className="bg-slate-900/95 border border-slate-800 text-slate-100 max-w-sm backdrop-blur-md shadow-2xl shadow-orange-950/20 rounded-xl overflow-hidden p-6 gap-6">
           <DialogHeader className="space-y-3">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-500/10 text-red-500 border border-red-500/20">
               <AlertTriangle className="h-6 w-6" />
@@ -615,13 +615,13 @@ export default function DashboardPage() {
           <DialogFooter className="border-slate-800/60 bg-slate-950/40 flex flex-col-reverse sm:flex-row gap-2 mt-4 justify-end">
             <Button
               onClick={() => setIsClearConfirmOpen(false)}
-              className="w-full sm:w-auto bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:text-violet-400 hover:border-violet-500/20 text-slate-355 font-audiowide text-[10px] tracking-wider py-2 px-4 h-auto cursor-pointer"
+              className="w-full sm:w-auto bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:text-orange-400 hover:border-orange-500/20 text-slate-355 font-audiowide text-[10px] tracking-wider py-2 px-4 h-auto cursor-pointer"
             >
               Cancel
             </Button>
             <Button
               onClick={executeClearLogs}
-              className="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-audiowide text-[10px] tracking-wider py-2 px-4 h-auto border-none cursor-pointer shadow-lg shadow-violet-950/20"
+              className="w-full sm:w-auto bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 font-audiowide text-[10px] tracking-wider py-2 px-4 h-auto border border-orange-400 cursor-pointer shadow-sm"
             >
               Yes, Clear All
             </Button>

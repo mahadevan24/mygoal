@@ -170,7 +170,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
         </div>
 
         <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
+          <div className="p-2 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
             <Flame className="w-5 h-5" />
           </div>
           <div>
@@ -205,7 +205,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
         <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-indigo-400" />
+            <Calendar className="w-5 h-5 text-amber-400" />
             <h3 className="text-lg font-bold text-slate-100 font-orbitron tracking-wide">Preparation Contribution Grid</h3>
           </div>
           {/* Legend */}
@@ -282,7 +282,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
 
         {/* Hover Details Panel */}
         <div className="border-t border-slate-800/40 pt-4 min-h-16 flex items-start gap-3 mt-auto shrink-0">
-          <Info className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+          <Info className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <div className="text-xs font-sans">
             {hoveredDay ? (
               <div className="space-y-1">

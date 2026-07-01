@@ -77,17 +77,17 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Visual background accents */}
-      <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-violet-600/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-orange-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-emerald-600/10 blur-[120px] pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Brand header */}
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center gap-2 mb-2">
-            <div className="p-2 rounded-xl bg-violet-600/20 text-violet-400 border border-violet-500/20">
+            <div className="p-2 rounded-xl bg-orange-600/20 text-orange-400 border border-orange-500/20">
               <Flame className="w-8 h-8 animate-pulse" />
             </div>
-            <span className="text-3xl font-extrabold font-orbitron tracking-wider bg-gradient-to-r from-violet-400 to-indigo-200 bg-clip-text text-transparent">
+            <span className="text-3xl font-extrabold font-orbitron tracking-wider bg-gradient-to-r from-orange-400 to-amber-200 bg-clip-text text-transparent">
               MyGoal
             </span>
           </div>
@@ -115,7 +115,7 @@ export default function LoginPage() {
         <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-xl shadow-2xl">
           <CardHeader>
             <CardTitle className="text-xl text-slate-100 flex items-center gap-2 font-orbitron tracking-wide">
-              <Sparkles className="w-5 h-5 text-violet-400" />
+              <Sparkles className="w-5 h-5 text-orange-400" />
               {mode === 'login' ? 'Sign In to Your Dashboard' : 'Create Your Account'}
             </CardTitle>
             <CardDescription className="text-slate-400">
@@ -136,7 +136,7 @@ export default function LoginPage() {
                     placeholder="you@domain.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-slate-950/60 border-slate-800/80 text-slate-100 focus:border-violet-500 focus:ring-violet-500/25 placeholder-slate-600"
+                    className="pl-10 bg-slate-950/60 border-slate-800/80 text-slate-100 focus:border-orange-500 focus:ring-orange-500/25 placeholder-slate-600"
                     required
                   />
                 </div>
@@ -151,7 +151,7 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 bg-slate-950/60 border-slate-800/80 text-slate-100 focus:border-violet-500 focus:ring-violet-500/25 placeholder-slate-600"
+                    className="pl-10 bg-slate-950/60 border-slate-800/80 text-slate-100 focus:border-orange-500 focus:ring-orange-500/25 placeholder-slate-600"
                     required
                   />
                 </div>
@@ -173,7 +173,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium py-2 rounded-lg transition-all shadow-md shadow-violet-950/20 font-audiowide tracking-wider"
+                className="w-full bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 font-medium py-2 rounded-[4px] transition-all shadow-sm border border-orange-400 font-audiowide tracking-wider"
                 disabled={loading}
               >
                 {loading ? 'Processing...' : mode === 'login' ? 'Sign In' : 'Sign Up'}
@@ -191,7 +191,7 @@ export default function LoginPage() {
                 setErrorMsg(null);
                 setSuccessMsg(null);
               }}
-              className="text-violet-400 hover:text-violet-300 text-xs font-semibold p-0 h-auto font-audiowide tracking-wider"
+              className="text-orange-400 hover:text-orange-300 text-xs font-semibold p-0 h-auto font-audiowide tracking-wider"
             >
               {mode === 'login' ? 'Register Now' : 'Log In Instead'}
             </Button>

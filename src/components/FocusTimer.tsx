@@ -187,7 +187,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
       <CardHeader className="pb-3 border-b border-slate-800/40 flex flex-row items-center justify-between space-y-0">
         <div>
           <CardTitle className="text-lg text-slate-100 flex items-center gap-2 font-orbitron tracking-wide">
-            <Clock className="w-5 h-5 text-violet-400" />
+            <Clock className="w-5 h-5 text-orange-400" />
             Study Logger & Focus Timer
           </CardTitle>
           <CardDescription className="text-slate-400">
@@ -198,7 +198,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
           <button
             onClick={() => { setIsTimerMode(true); setStatusMsg(null); }}
             className={`px-3 py-1 text-[10px] tracking-wider font-semibold rounded-md transition-all ${
-              isTimerMode ? 'bg-violet-600/20 text-violet-300 border border-violet-500/20' : 'text-slate-500 hover:text-slate-300'
+              isTimerMode ? 'bg-orange-600/20 text-orange-300 border border-orange-500/20' : 'text-slate-500 hover:text-slate-300'
             }`}
           >
             Timer
@@ -206,7 +206,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
           <button
             onClick={() => { setIsTimerMode(false); setStatusMsg(null); }}
             className={`px-3 py-1 text-[10px] tracking-wider font-semibold rounded-md transition-all ${
-              !isTimerMode ? 'bg-violet-600/20 text-violet-300 border border-violet-500/20' : 'text-slate-500 hover:text-slate-300'
+              !isTimerMode ? 'bg-orange-600/20 text-orange-300 border border-orange-500/20' : 'text-slate-500 hover:text-slate-300'
             }`}
           >
             Manual
@@ -224,7 +224,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
               disabled={isActive && isTimerMode}
               className={`py-2 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border ${
                 category === cat
-                  ? 'bg-gradient-to-r from-violet-600/10 to-indigo-600/10 border-violet-500 text-violet-300 shadow-md shadow-violet-950/10'
+                  ? 'bg-gradient-to-r from-orange-600/10 to-amber-600/10 border-orange-500 text-orange-300 shadow-md shadow-orange-950/10'
                   : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
               } ${(isActive && isTimerMode) ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
@@ -239,7 +239,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
             <div className="relative flex items-center justify-center">
               {/* Outer pulsing ring when timer is running */}
               {isActive && !isPaused && (
-                <div className="absolute inset-0 rounded-full border-2 border-violet-500/30 animate-ping opacity-75" />
+                <div className="absolute inset-0 rounded-full border-2 border-orange-500/30 animate-ping opacity-75" />
               )}
               <div className="w-36 h-36 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center bg-slate-950/60 shadow-inner z-10">
                 <span className="text-3xl font-mono font-bold text-slate-100 tracking-tight">
@@ -256,7 +256,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
               {!isActive ? (
                 <Button
                   onClick={handleStart}
-                  className="bg-violet-600 hover:bg-violet-500 text-white rounded-full p-4 h-12 w-12 flex items-center justify-center transition-all shadow-md shadow-violet-950/30"
+                  className="bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 rounded-full p-4 h-12 w-12 flex items-center justify-center transition-all shadow-sm border border-orange-400"
                 >
                   <Play className="w-5 h-5 fill-current ml-0.5" />
                 </Button>
@@ -273,7 +273,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
                   ) : (
                     <Button
                       onClick={handleResume}
-                      className="bg-violet-600 hover:bg-violet-500 text-white rounded-full p-4 h-12 w-12 flex items-center justify-center transition-all"
+                      className="bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 rounded-full p-4 h-12 w-12 flex items-center justify-center transition-all border border-orange-400"
                     >
                       <Play className="w-5 h-5 fill-current ml-0.5" />
                     </Button>
@@ -288,7 +288,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
                   <Button
                     onClick={handleStopAndSave}
                     disabled={loading || seconds < 10} // require at least 10 seconds before saving to prevent spam
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-full px-5 h-12 flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-950/30 font-semibold font-audiowide tracking-wider text-[11px]"
+                    className="bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 rounded-full px-5 h-12 flex items-center justify-center gap-2 transition-all shadow-sm border border-orange-400 font-semibold font-audiowide tracking-wider text-[11px]"
                   >
                     <CheckCircle className="w-5 h-5" />
                     Save {Math.max(1, Math.round(seconds / 60))}m
@@ -315,7 +315,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
                     placeholder="e.g. 60"
                     value={manualMinutes}
                     onChange={(e) => setManualMinutes(e.target.value)}
-                    className="bg-slate-950/60 border-slate-800/80 text-slate-100 placeholder-slate-600 focus:border-violet-500 focus:ring-violet-500/25"
+                    className="bg-slate-950/60 border-slate-800/80 text-slate-100 placeholder-slate-600 focus:border-orange-500 focus:ring-orange-500/25"
                     required
                   />
                 </div>
@@ -327,7 +327,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
                   type="date"
                   value={manualDate}
                   onChange={(e) => setManualDate(e.target.value)}
-                  className="bg-slate-950/60 border-slate-800/80 text-slate-100 focus:border-violet-500 focus:ring-violet-500/25"
+                  className="bg-slate-950/60 border-slate-800/80 text-slate-100 focus:border-orange-500 focus:ring-orange-500/25"
                   required
                 />
               </div>
@@ -341,14 +341,14 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
                 value={manualNotes}
                 onChange={(e) => setManualNotes(e.target.value)}
                 rows={2}
-                className="w-full rounded-md border border-slate-800/80 bg-slate-950/60 p-2.5 text-sm text-slate-100 placeholder-slate-600 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500/25 font-sans"
+                className="w-full rounded-md border border-slate-800/80 bg-slate-950/60 p-2.5 text-sm text-slate-100 placeholder-slate-600 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500/25 font-sans"
               />
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-medium py-2 rounded-lg transition-all shadow-md shadow-violet-950/20 flex items-center justify-center gap-2 font-audiowide tracking-wider"
+              className="w-full bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 font-medium py-2 rounded-[4px] transition-all shadow-sm border border-orange-400 flex items-center justify-center gap-2 font-audiowide tracking-wider"
             >
               {loading ? 'Logging...' : 'Log Practice Minutes'}
             </Button>
