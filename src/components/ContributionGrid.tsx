@@ -36,11 +36,11 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
     return map;
   }, [logs]);
 
-  // Generate rolling 365 days ending today
+  // Generate fixed 365 days starting from July 1, 2026
   const days = useMemo(() => {
-    const today = startOfDay(new Date());
-    const startDate = subDays(today, 364); // 365 days total
-    return eachDayOfInterval({ start: startDate, end: today });
+    const startDate = startOfDay(new Date(2026, 6, 1)); // July 1, 2026 (Month is 0-indexed, so 6 is July)
+    const endDate = startOfDay(new Date(2027, 5, 30));   // June 30, 2027 (Month is 5 is June)
+    return eachDayOfInterval({ start: startDate, end: endDate });
   }, []);
 
   // Compute streaks
@@ -62,7 +62,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
     let dayIndex = 0;
     let keepChecking = true;
 
-    while (keepChecking && dayIndex < 365) {
+    while (keepChecking && dayIndex < days.length) {
       const dateToCheck = subDays(new Date(), dayIndex);
       const dateStr = format(dateToCheck, 'yyyy-MM-dd');
       const log = logMap[dateStr];
@@ -86,7 +86,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
     // Calculate maximum streak and total completions over the 365 days
     let runningStreak = 0;
     // Iterate from oldest to newest
-    for (let i = 364; i >= 0; i--) {
+    for (let i = days.length - 1; i >= 0; i--) {
       const dateStr = format(days[i], 'yyyy-MM-dd');
       const log = logMap[dateStr];
       const totalMinutes = log ? (log.dsa_minutes + log.lld_minutes + log.system_design_minutes) : 0;
