@@ -184,17 +184,17 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
 
   return (
     <Card className="h-full bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg flex flex-col">
-      <CardHeader className="pb-3 border-b border-slate-800/40 flex flex-row items-center justify-between space-y-0">
-        <div>
+      <CardHeader className="p-4 sm:p-6 pb-3 sm:pb-3 border-b border-slate-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="space-y-1">
           <CardTitle className="text-lg text-slate-100 flex items-center gap-2 font-orbitron tracking-wide">
-            <Clock className="w-5 h-5 text-orange-400" />
-            Study Logger & Focus Timer
+            <Clock className="w-5 h-5 text-orange-400 shrink-0" />
+            <span>Study Logger & Focus Timer</span>
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-slate-400 text-xs">
             Log your preparation hours to maintain your consistency streak.
           </CardDescription>
         </div>
-        <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800/60 font-audiowide">
+        <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800/60 font-audiowide self-start sm:self-auto shrink-0">
           <button
             onClick={() => { setIsTimerMode(true); setStatusMsg(null); }}
             className={`px-3 py-1 text-[10px] tracking-wider font-semibold rounded-md transition-all ${
@@ -214,7 +214,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-4 pb-4 flex-1 flex flex-col justify-center space-y-4">
+      <CardContent className="p-4 sm:p-6 pt-4 sm:pt-4 flex-1 flex flex-col justify-center space-y-4">
         {/* Category Selector Tabs */}
         <div className="grid grid-cols-3 gap-2 font-oxanium">
           {(['dsa', 'lld', 'system_design'] as const).map((cat) => (

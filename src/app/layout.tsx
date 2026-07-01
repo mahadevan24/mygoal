@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Orbitron, Oxanium, Space_Mono, Audiowide, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import RegisterSW from "@/components/RegisterSW";
 
 const orbitron = Orbitron({
   variable: "--font-orbitron",
@@ -40,6 +41,11 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "MyGoal - Tech Career Success Tracker",
   description: "One year of relentless consistency to master DSA, LLD, and High-Level System Design.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "MyGoal",
+  },
 };
 
 export default function RootLayout({
@@ -52,7 +58,10 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${orbitron.variable} ${oxanium.variable} ${spaceMono.variable} ${audiowide.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+        <RegisterSW />
+        {children}
+      </body>
     </html>
   );
 }

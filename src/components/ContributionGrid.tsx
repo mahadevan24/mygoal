@@ -156,70 +156,70 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
   };
 
   return (
-    <div className="h-full flex flex-col gap-6">
+    <div className="h-full flex flex-col gap-4 sm:gap-6">
       {/* Streaks and Stats Header */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
-            <Flame className="w-5 h-5 fill-current" />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="p-3 sm:p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-2 sm:gap-3">
+          <div className="p-1.5 sm:p-2 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 shrink-0">
+            <Flame className="w-4 h-4 sm:w-5 h-5 fill-current" />
           </div>
-          <div>
-            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Current Streak</span>
-            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.currentStreak} Days</span>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
-            <Flame className="w-5 h-5" />
-          </div>
-          <div>
-            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Longest Streak</span>
-            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.maxStreak} Days</span>
+          <div className="min-w-0">
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide leading-tight truncate">Current Streak</span>
+            <span className="text-base sm:text-xl font-black text-slate-100 font-oxanium tracking-wide whitespace-nowrap">{streakStats.currentStreak} Days</span>
           </div>
         </div>
 
-        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            <CheckCircle2 className="w-5 h-5" />
+        <div className="p-3 sm:p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-2 sm:gap-3">
+          <div className="p-1.5 sm:p-2 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 shrink-0">
+            <Flame className="w-4 h-4 sm:w-5 h-5" />
           </div>
-          <div>
-            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Completed Days</span>
-            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.completedDays} Days</span>
+          <div className="min-w-0">
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide leading-tight truncate">Longest Streak</span>
+            <span className="text-base sm:text-xl font-black text-slate-100 font-oxanium tracking-wide whitespace-nowrap">{streakStats.maxStreak} Days</span>
           </div>
         </div>
 
-        <div className="p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
-            <AlertTriangle className="w-5 h-5" />
+        <div className="p-3 sm:p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-2 sm:gap-3">
+          <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+            <CheckCircle2 className="w-4 h-4 sm:w-5 h-5" />
           </div>
-          <div>
-            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Partial Days</span>
-            <span className="text-xl font-black text-slate-100 font-oxanium tracking-wide">{streakStats.partialDays} Days</span>
+          <div className="min-w-0">
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide leading-tight truncate">Completed Days</span>
+            <span className="text-base sm:text-xl font-black text-slate-100 font-oxanium tracking-wide whitespace-nowrap">{streakStats.completedDays} Days</span>
+          </div>
+        </div>
+
+        <div className="p-3 sm:p-4 rounded-xl border border-slate-800/80 bg-slate-950/40 backdrop-blur-sm flex items-center gap-2 sm:gap-3">
+          <div className="p-1.5 sm:p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
+            <AlertTriangle className="w-4 h-4 sm:w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide leading-tight truncate">Partial Days</span>
+            <span className="text-base sm:text-xl font-black text-slate-100 font-oxanium tracking-wide whitespace-nowrap">{streakStats.partialDays} Days</span>
           </div>
         </div>
       </div>
 
       {/* Contribution Calendar Card */}
-      <div className="flex-1 p-6 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col justify-between gap-6">
+      <div className="flex-1 p-4 sm:p-6 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col justify-between gap-6">
         <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-amber-400" />
-            <h3 className="text-lg font-bold text-slate-100 font-orbitron tracking-wide">Preparation Contribution Grid</h3>
+            <Calendar className="w-5 h-5 text-amber-400 shrink-0" />
+            <h3 className="text-base sm:text-lg font-bold text-slate-100 font-orbitron tracking-wide">Preparation Contribution Grid</h3>
           </div>
           {/* Legend */}
-          <div className="flex items-center gap-3 text-[10px] text-slate-400 font-audiowide tracking-wider">
+          <div className="flex flex-wrap items-center gap-3 text-[10px] text-slate-400 font-audiowide tracking-wider">
             <div className="flex items-center gap-1.5">
-              <div className="w-5 h-5 rounded-[3px] bg-slate-900 border border-slate-800" />
+              <div className="w-4 h-4 rounded-[3px] bg-slate-900 border border-slate-800 shrink-0" />
               <span>No study</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-5 h-5 rounded-[3px] bg-amber-500 border border-amber-400" />
+              <div className="w-4 h-4 rounded-[3px] bg-amber-500 border border-amber-400 shrink-0" />
               <span>Partial</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-5 h-5 rounded-[3px] bg-emerald-500 border border-emerald-400" />
+              <div className="w-4 h-4 rounded-[3px] bg-emerald-500 border border-emerald-400 shrink-0" />
               <span>Target Met</span>
             </div>
           </div>

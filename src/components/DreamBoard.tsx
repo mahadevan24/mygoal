@@ -205,11 +205,11 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2 font-orbitron tracking-wide">
-            <Cloud className="w-5 h-5 text-amber-400 fill-current/10 animate-pulse" />
-            Dream Board
+            <Cloud className="w-5 h-5 text-amber-400 fill-current/10 animate-pulse shrink-0" />
+            <span>Dream Board</span>
           </h2>
           <p className="text-slate-400 text-sm">
             Manifest your dream lifestyle, career goals, and future achievements.
@@ -217,7 +217,7 @@ export default function DreamBoard({ userId }: DreamBoardProps) {
         </div>
 
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-          <DialogTrigger render={<Button className="bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider border border-orange-400 shadow-sm" />}>
+          <DialogTrigger render={<Button className="bg-orange-600/90 hover:bg-orange-500/90 text-orange-50 gap-2 text-[10px] py-2 px-3 h-auto font-audiowide tracking-wider border border-orange-400 shadow-sm self-start sm:self-auto shrink-0" />}>
             <Plus className="w-4 h-4" /> Add Dream Card
           </DialogTrigger>
           <DialogContent className="bg-slate-900 border border-slate-800 text-slate-100 max-w-sm">
