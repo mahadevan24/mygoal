@@ -8,7 +8,7 @@ import FocusTimer from '@/components/FocusTimer';
 import VisionBoard from '@/components/VisionBoard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Flame, LogOut, Sparkles, BookOpen, Layers, Award, Target, HelpCircle, Loader2, Trash2 } from 'lucide-react';
+import { Flame, LogOut, Target, Loader2, Trash2 } from 'lucide-react';
 import { differenceInDays, parseISO } from 'date-fns';
 
 interface StudyLog {
@@ -230,96 +230,77 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 pt-8 space-y-8 relative z-10">
-        {/* Goals Countdown Hero Banner */}
-        <div className="p-6 rounded-2xl border border-indigo-500/15 bg-gradient-to-r from-violet-950/20 via-indigo-950/10 to-slate-950 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl relative overflow-hidden">
-          <div className="space-y-1.5">
-            <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-violet-500/20 text-violet-300 border border-violet-500/30 font-orbitron">
-              Target July 1, 2027
-            </span>
-            <h2 className="text-2xl font-black text-slate-100 flex items-center gap-2 tracking-tight font-orbitron">
-              Master DSA, LLD, and High-Level System Design
-            </h2>
-            <p className="text-sm text-slate-400 max-w-2xl font-medium">
-              Land your dream role at <strong className="text-slate-200">Google, Amazon, or Microsoft</strong>. Success is built on daily execution. Spend 3 hours today to keep the momentum going.
-            </p>
-          </div>
-
-          <div className="shrink-0 flex items-center gap-4 bg-slate-950/80 p-4 rounded-xl border border-slate-900">
-            <Target className="w-8 h-8 text-indigo-400 shrink-0" />
-            <div>
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block font-audiowide">Countdown</span>
-              <span className="text-2xl font-black text-slate-100 font-oxanium tracking-wide">{daysRemaining} Days Left</span>
-            </div>
-          </div>
-        </div>
-
-        {/* 4 Summary Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-slate-900/30 border-slate-800/80 backdrop-blur-sm shadow-md">
-            <CardContent className="p-5 flex items-center justify-between">
-              <div>
-                <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block mb-1 font-audiowide">Total Preparation</span>
-                <span className="text-2xl font-black text-slate-100 font-oxanium tracking-wide">{summary.totalHours} hrs</span>
-              </div>
-              <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/10">
-                <Award className="w-5 h-5" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-slate-900/30 border-slate-800/80 backdrop-blur-sm shadow-md">
-            <CardContent className="p-5 flex items-center justify-between">
-              <div>
-                <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block mb-1 font-audiowide">DSA Logs</span>
-                <span className="text-2xl font-black text-slate-100 font-oxanium tracking-wide">{summary.dsaHours} hrs</span>
-              </div>
-              <div className="p-2.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/10">
-                <BookOpen className="w-5 h-5" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-slate-900/30 border-slate-800/80 backdrop-blur-sm shadow-md">
-            <CardContent className="p-5 flex items-center justify-between">
-              <div>
-                <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block mb-1 font-audiowide">LLD Logs</span>
-                <span className="text-2xl font-black text-slate-100 font-oxanium tracking-wide">{summary.lldHours} hrs</span>
-              </div>
-              <div className="p-2.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/10">
-                <Layers className="w-5 h-5" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-slate-900/30 border-slate-800/80 backdrop-blur-sm shadow-md">
-            <CardContent className="p-5 flex items-center justify-between">
-              <div>
-                <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider block mb-1 font-audiowide">Sys Design Logs</span>
-                <span className="text-2xl font-black text-slate-100 font-oxanium tracking-wide">{summary.sdHours} hrs</span>
-              </div>
-              <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/10">
-                <Sparkles className="w-5 h-5" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Contribution grid (365 Days Grid) */}
-        {loadingLogs ? (
-          <div className="h-64 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm animate-pulse" />
-        ) : (
-          <ContributionGrid logs={displayLogs} />
-        )}
-
-        {/* Main Split: Focus Timer & Vision Board */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
+      <div className="max-w-7xl mx-auto px-4 pt-6 space-y-6 relative z-10">
+        
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          {/* Left Column: Focus Timer & Stats */}
+          <div className="lg:col-span-4 space-y-6">
             <FocusTimer userId={currentUserId} onLogSaved={fetchStudyLogs} />
+
+            {/* Compact Countdown & Stats Card */}
+            <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg">
+              <CardContent className="p-5 space-y-4">
+                {/* Header / Title */}
+                <div className="flex items-center justify-between border-b border-slate-800/40 pb-3">
+                  <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2 font-orbitron tracking-wider">
+                    <Target className="w-4 h-4 text-violet-400" />
+                    Preparation Hub
+                  </h3>
+                  <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-violet-500/20 text-violet-300 border border-violet-500/30 font-orbitron">
+                    Target July 2027
+                  </span>
+                </div>
+
+                {/* Countdown Banner (Compact) */}
+                <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-900/60 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Flame className="w-4 h-4 text-indigo-400 fill-current animate-pulse" />
+                    <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider block font-audiowide">Countdown</span>
+                  </div>
+                  <span className="text-sm font-black text-slate-100 font-oxanium tracking-wide">{daysRemaining} Days Left</span>
+                </div>
+
+                {/* Goals Info text (Small / Compact) */}
+                <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                  Land your dream role at <strong className="text-slate-200">Google, Amazon, or Microsoft</strong>. Success is built on daily execution. Spend 3 hours today to keep the momentum going.
+                </p>
+
+                {/* Grid of 4 stats (2x2) */}
+                <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/45">
+                  <div className="p-3 rounded-lg bg-slate-950/40 border border-slate-900/80 flex flex-col justify-center">
+                    <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1 font-audiowide">Total Prep</span>
+                    <span className="text-lg font-black text-slate-100 font-oxanium tracking-wide">{summary.totalHours} hrs</span>
+                  </div>
+                  <div className="p-3 rounded-lg bg-slate-950/40 border border-slate-900/80 flex flex-col justify-center">
+                    <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1 font-audiowide">DSA Logs</span>
+                    <span className="text-lg font-black text-slate-100 font-oxanium tracking-wide">{summary.dsaHours} hrs</span>
+                  </div>
+                  <div className="p-3 rounded-lg bg-slate-950/40 border border-slate-900/80 flex flex-col justify-center">
+                    <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1 font-audiowide">LLD Logs</span>
+                    <span className="text-lg font-black text-slate-100 font-oxanium tracking-wide">{summary.lldHours} hrs</span>
+                  </div>
+                  <div className="p-3 rounded-lg bg-slate-950/40 border border-slate-900/80 flex flex-col justify-center">
+                    <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1 font-audiowide">Sys Design</span>
+                    <span className="text-lg font-black text-slate-100 font-oxanium tracking-wide">{summary.sdHours} hrs</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-          <div className="lg:col-span-2">
+
+          {/* Right Column: Grid & Vision Board */}
+          <div className="lg:col-span-8 space-y-6">
+            {loadingLogs ? (
+              <div className="h-64 rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm animate-pulse" />
+            ) : (
+              <ContributionGrid logs={displayLogs} />
+            )}
+
             <VisionBoard userId={currentUserId} />
           </div>
+
         </div>
       </div>
     </main>

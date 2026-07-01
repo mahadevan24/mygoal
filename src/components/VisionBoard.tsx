@@ -29,7 +29,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
 
   // Form states
   const [title, setTitle] = useState<string>('');
-  const [targetCompany, setTargetCompany] = useState<string>('Google');
+  const [targetCompany, setTargetCompany] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -109,6 +109,7 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
 
       // Reset states
       setTitle('');
+      setTargetCompany('');
       setFile(null);
       setIsOpen(false);
       fetchItems();
@@ -182,17 +183,24 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="target-company" className="text-[10px] font-semibold uppercase tracking-widest font-audiowide text-slate-300">Target Company</Label>
-                  <select
+                  <Input
                     id="target-company"
+                    placeholder="e.g. Google, Amazon, Netflix..."
                     value={targetCompany}
                     onChange={(e) => setTargetCompany(e.target.value)}
-                    className="w-full h-9 rounded-md border border-slate-800 bg-slate-950 px-3 py-1 text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-violet-500 font-audiowide tracking-wider text-[11px]"
-                  >
-                    <option value="Google">Google</option>
-                    <option value="Amazon">Amazon</option>
-                    <option value="Microsoft">Microsoft</option>
-                    <option value="General">Other / Dream Company</option>
-                  </select>
+                    className="bg-slate-950 border-slate-800 text-slate-100 font-audiowide tracking-wider text-[11px] placeholder:text-slate-650 h-9"
+                    list="company-suggestions"
+                  />
+                  <datalist id="company-suggestions">
+                    <option value="Google" />
+                    <option value="Amazon" />
+                    <option value="Microsoft" />
+                    <option value="Meta" />
+                    <option value="Netflix" />
+                    <option value="Apple" />
+                    <option value="Stripe" />
+                    <option value="OpenAI" />
+                  </datalist>
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="image-file" className="text-[10px] font-semibold uppercase tracking-widest font-audiowide text-slate-300">Goal Image</Label>
@@ -210,7 +218,6 @@ export default function VisionBoard({ userId }: VisionBoardProps) {
                         accept="image/*"
                         onChange={(e) => setFile(e.target.files?.[0] || null)}
                         className="hidden"
-                        required
                       />
                     </label>
                   </div>
