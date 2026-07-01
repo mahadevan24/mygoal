@@ -9,10 +9,11 @@ import VisionBoard from '@/components/VisionBoard';
 import DreamBoard from '@/components/DreamBoard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud } from 'lucide-react';
+import { Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { differenceInDays, parseISO } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 
 interface StudyLog {
   date: string;
@@ -30,7 +31,15 @@ export default function DashboardPage() {
   const [loadingLogs, setLoadingLogs] = useState<boolean>(false);
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isClearConfirmOpen, setIsClearConfirmOpen] = useState<boolean>(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // User initials for sidebar avatar
+  const userEmailInitials = React.useMemo(() => {
+    if (!user || !user.email) return 'GM';
+    const emailParts = user.email.split('@')[0];
+    return emailParts.substring(0, 2).toUpperCase();
+  }, [user]);
 
   // Click outside to close profile dropdown
   useEffect(() => {
@@ -176,66 +185,68 @@ export default function DashboardPage() {
 
   if (loadingSession) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 pb-16 relative overflow-hidden animate-pulse">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex relative overflow-hidden animate-pulse">
         {/* Visual background accents */}
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/5 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/5 blur-[120px] pointer-events-none" />
 
-        {/* Dashboard Top Header Skeleton */}
-        <header className="border-b border-slate-900 bg-slate-950/50 backdrop-blur-md sticky top-0 z-40">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-slate-800/40 w-9 h-9" />
-              <div className="h-5 w-24 bg-slate-800/60 rounded" />
+        {/* Sidebar Skeleton */}
+        <aside className="w-16 h-screen border-r border-slate-900 bg-slate-950/40 backdrop-blur-md flex flex-col justify-between p-3 shrink-0">
+          <div className="flex flex-col gap-6">
+            <div className="flex justify-center py-2">
+              <div className="p-1.5 rounded-lg bg-slate-800/40 w-8 h-8" />
             </div>
-            <div className="w-10 h-10 rounded-full bg-slate-800/40" />
-          </div>
-        </header>
-
-        {/* Main Container Skeleton */}
-        <div className="max-w-7xl mx-auto px-4 pt-6 space-y-6 relative z-10">
-          {/* Tab Navigation List Skeleton */}
-          <div className="flex justify-center border-b border-slate-900 pb-2">
-            <div className="bg-slate-900/60 p-1 rounded-xl border border-slate-800/80 flex gap-2 w-96 h-10 justify-center items-center">
+            <div className="flex justify-center border-b border-slate-900/50 pb-4">
+              <div className="w-6 h-6 rounded bg-slate-800/40" />
+            </div>
+            <div className="flex flex-col gap-2 items-center">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-6 w-20 bg-slate-800/60 rounded-lg" />
+                <div key={i} className="h-10 w-10 bg-slate-800/40 rounded-lg" />
               ))}
             </div>
           </div>
+          <div className="flex justify-center">
+            <div className="w-10 h-10 rounded-full bg-slate-800/40" />
+          </div>
+        </aside>
 
-          {/* Daily Focus Panel Skeleton */}
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-              {/* Focus Timer Skeleton */}
-              <div className="lg:col-span-4 flex flex-col">
-                <div className="h-[432px] rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm p-6 flex flex-col justify-between">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-800/40">
-                      <div className="space-y-2 flex-1">
-                        <div className="h-4 w-40 bg-slate-800/80 rounded" />
-                        <div className="h-3 w-56 bg-slate-800/60 rounded" />
+        {/* Main Content Area Skeleton */}
+        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+          <div className="max-w-7xl w-full mx-auto px-6 py-6 space-y-6 relative z-10 flex-1">
+            {/* Daily Focus Panel Skeleton */}
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                {/* Focus Timer Skeleton */}
+                <div className="lg:col-span-4 flex flex-col">
+                  <div className="h-[432px] rounded-xl border border-slate-800/80 bg-slate-900/40 backdrop-blur-sm p-6 flex flex-col justify-between">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between pb-3 border-b border-slate-800/40">
+                        <div className="space-y-2 flex-1">
+                          <div className="h-4 w-40 bg-slate-800/80 rounded" />
+                          <div className="h-3 w-56 bg-slate-800/60 rounded" />
+                        </div>
+                        <div className="h-6 w-24 bg-slate-800/60 rounded-md" />
                       </div>
-                      <div className="h-6 w-24 bg-slate-800/60 rounded-md" />
+                      <div className="grid grid-cols-3 gap-2 pt-2">
+                        <div className="h-8 bg-slate-800/40 rounded-lg" />
+                        <div className="h-8 bg-slate-800/40 rounded-lg" />
+                        <div className="h-8 bg-slate-800/40 rounded-lg" />
+                      </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-2 pt-2">
-                      <div className="h-8 bg-slate-800/40 rounded-lg" />
-                      <div className="h-8 bg-slate-800/40 rounded-lg" />
-                      <div className="h-8 bg-slate-800/40 rounded-lg" />
+                    <div className="flex flex-col items-center justify-center space-y-4 py-4">
+                      <div className="w-36 h-36 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center bg-slate-950/60">
+                        <div className="h-6 w-20 bg-slate-800/80 rounded mb-1" />
+                        <div className="h-2 w-10 bg-slate-800/60 rounded" />
+                      </div>
+                      <div className="w-12 h-12 rounded-full bg-slate-800/60" />
                     </div>
+                    <div className="h-10 bg-slate-850 rounded-xl" />
                   </div>
-                  <div className="flex flex-col items-center justify-center space-y-4 py-4">
-                    <div className="w-36 h-36 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center bg-slate-950/60">
-                      <div className="h-6 w-20 bg-slate-800/80 rounded mb-1" />
-                      <div className="h-2 w-10 bg-slate-800/60 rounded" />
-                    </div>
-                    <div className="w-12 h-12 rounded-full bg-slate-800/60" />
-                  </div>
-                  <div className="h-10 bg-slate-850 rounded-xl" />
                 </div>
-              </div>
-              {/* Contribution Grid Skeleton */}
-              <div className="lg:col-span-8 flex flex-col">
-                <ContributionGridSkeleton />
+                {/* Contribution Grid Skeleton */}
+                <div className="lg:col-span-8 flex flex-col">
+                  <ContributionGridSkeleton />
+                </div>
               </div>
             </div>
           </div>
@@ -248,262 +259,341 @@ export default function DashboardPage() {
   const currentUserId = user?.id || 'mock-user-id';
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 pb-16 relative overflow-hidden">
+    <main className="min-h-screen bg-slate-950 text-slate-100 flex relative overflow-hidden">
       {/* Visual background accents */}
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/5 blur-[120px] pointer-events-none" />
 
-      {/* Unconfigured Demo Notice */}
-      {!isSupabaseConfigured && (
-        <div className="bg-amber-500/10 border-b border-amber-500/20 text-amber-200 text-xs py-2 px-4 flex items-center justify-between gap-3 relative z-50">
-          <div className="flex items-center gap-2">
-            <span className="bg-amber-500 text-slate-950 font-bold px-1.5 py-0.5 rounded text-[10px]">DEMO PREVIEW</span>
-            <span>Local DB is inactive. Configure your credentials in <code className="bg-slate-950/60 px-1 rounded py-0.5">.env.local</code> to store logs.</span>
-          </div>
-          <Button
-            variant="link"
-            onClick={() => router.push('/login')}
-            className="text-amber-300 font-bold text-xs h-auto p-0 hover:text-amber-200"
-          >
-            Setup Guide
-          </Button>
-        </div>
-      )}
-
-      {/* Dashboard Top Header */}
-      <header className="border-b border-slate-900 bg-slate-950/50 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-violet-600/20 text-violet-400 border border-violet-500/10">
-              <Flame className="w-6 h-6 fill-current animate-pulse" />
-            </div>
-            <h1 className="text-xl font-black font-orbitron tracking-wider bg-gradient-to-r from-slate-100 to-indigo-200 bg-clip-text text-transparent">
-              MyGoal
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="relative p-1 rounded-full border border-violet-500/35 hover:border-violet-500/80 bg-slate-900/60 hover:bg-slate-900 transition-all duration-300 text-violet-400 focus:outline-none flex items-center justify-center w-10 h-10 shadow-md shadow-violet-950/20 cursor-pointer"
-                aria-label="Profile settings"
-              >
-                <User className="w-5 h-5 text-violet-400" />
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-950 animate-pulse" />
-              </button>
-
-              {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md shadow-2xl shadow-violet-950/30 py-2 z-50 animate-in fade-in duration-200">
-                  <div className="px-4 py-2 border-b border-slate-900 flex flex-col">
-                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide">Logged In</span>
-                    <span className="text-xs text-slate-300 font-semibold font-mono truncate">{user ? user.email : 'Guest / Demo Mode'}</span>
+      <Tabs defaultValue="focus" orientation="vertical" className="flex w-full min-h-screen">
+        {/* Collapsible Sidebar */}
+        <aside
+          className={cn(
+            "h-screen border-r border-slate-900 bg-slate-950/40 backdrop-blur-md flex flex-col justify-between p-3 relative z-30 transition-all duration-300 ease-in-out shrink-0 select-none",
+            isSidebarExpanded ? "w-64" : "w-16"
+          )}
+        >
+          <div className="flex flex-col gap-6">
+            {/* Sidebar Top: Toggle & Logo */}
+            <div className={cn("flex items-center py-2", isSidebarExpanded ? "justify-between px-2" : "justify-center")}>
+              {isSidebarExpanded ? (
+                <>
+                  <div className="flex items-center px-1">
+                    <span className="font-orbitron font-black text-sm tracking-wider bg-gradient-to-r from-slate-100 to-indigo-200 bg-clip-text text-transparent">
+                      MyGoal
+                    </span>
                   </div>
-                  <div className="p-1 space-y-0.5 font-audiowide">
-                    <button
-                      onClick={() => {
-                        setIsProfileOpen(false);
-                        setIsClearConfirmOpen(true);
-                      }}
-                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
-                    >
-                      <Trash2 className="w-4 h-4 text-violet-400" />
-                      Clear All Counts
-                    </button>
-                    {isSupabaseConfigured && (
-                      <button
-                        onClick={() => {
-                          setIsProfileOpen(false);
-                          handleLogout();
-                        }}
-                        className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
-                      >
-                        <LogOut className="w-4 h-4 text-violet-400" />
-                        Log Out
-                      </button>
-                    )}
-                  </div>
-                </div>
+                  <button
+                    onClick={() => setIsSidebarExpanded(false)}
+                    className="p-1.5 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-violet-400 cursor-pointer transition-colors"
+                  >
+                    <PanelLeftClose className="w-4 h-4" />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setIsSidebarExpanded(true)}
+                  className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-900 text-slate-400 hover:text-violet-400 cursor-pointer transition-colors"
+                >
+                  <PanelLeftOpen className="w-5 h-5" />
+                </button>
               )}
             </div>
-          </div>
-        </div>
-      </header>
 
-      {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 pt-6 space-y-6 relative z-10">
-        
-        <Tabs defaultValue="focus" className="w-full space-y-6">
-          {/* Tab Navigation List */}
-          <div className="flex justify-center border-b border-slate-900 pb-2">
-            <TabsList className="bg-slate-900/60 p-1 rounded-xl border border-slate-800/80 flex gap-2 font-orbitron text-xs">
+            {/* Tabs Trigger Buttons */}
+            <TabsList className={cn("bg-transparent !p-0 !w-full flex flex-col font-orbitron text-xs", isSidebarExpanded ? "gap-1 items-stretch" : "gap-4 items-center")}>
               <TabsTrigger
                 value="focus"
-                className="px-4 py-2 rounded-lg data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 text-slate-400 hover:text-slate-200 transition-all font-semibold tracking-wider flex items-center gap-2 cursor-pointer border border-transparent"
+                className={cn(
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
+                )}
               >
-                <Flame className="w-4 h-4 text-violet-400 fill-current animate-pulse" />
-                Daily Focus
+                <Flame className="w-5 h-5 text-violet-400 shrink-0 fill-current animate-pulse" />
+                {isSidebarExpanded && <span className="text-xs transition-all duration-300">Daily Focus</span>}
+                {!isSidebarExpanded && (
+                  <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
+                    Daily Focus
+                  </div>
+                )}
               </TabsTrigger>
+
               <TabsTrigger
                 value="hub"
-                className="px-4 py-2 rounded-lg data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 text-slate-400 hover:text-slate-200 transition-all font-semibold tracking-wider flex items-center gap-2 cursor-pointer border border-transparent"
+                className={cn(
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
+                )}
               >
-                <Target className="w-4 h-4 text-violet-400" />
-                Preparation Hub
+                <Target className="w-5 h-5 text-violet-400 shrink-0" />
+                {isSidebarExpanded && <span className="text-xs transition-all duration-300">Preparation Hub</span>}
+                {!isSidebarExpanded && (
+                  <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
+                    Preparation Hub
+                  </div>
+                )}
               </TabsTrigger>
+
               <TabsTrigger
                 value="vision"
-                className="px-4 py-2 rounded-lg data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 text-slate-400 hover:text-slate-200 transition-all font-semibold tracking-wider flex items-center gap-2 cursor-pointer border border-transparent"
+                className={cn(
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
+                )}
               >
-                <Sparkles className="w-4 h-4 text-violet-400" />
-                Vision Board
+                <Sparkles className="w-5 h-5 text-violet-400 shrink-0" />
+                {isSidebarExpanded && <span className="text-xs transition-all duration-300">Vision Board</span>}
+                {!isSidebarExpanded && (
+                  <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
+                    Vision Board
+                  </div>
+                )}
               </TabsTrigger>
+
               <TabsTrigger
                 value="dreamboard"
-                className="px-4 py-2 rounded-lg data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 text-slate-400 hover:text-slate-200 transition-all font-semibold tracking-wider flex items-center gap-2 cursor-pointer border border-transparent"
+                className={cn(
+                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
+                )}
               >
-                <Cloud className="w-4 h-4 text-violet-400" />
-                Dream Board
+                <Cloud className="w-5 h-5 text-violet-400 shrink-0" />
+                {isSidebarExpanded && <span className="text-xs transition-all duration-300">Dream Board</span>}
+                {!isSidebarExpanded && (
+                  <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
+                    Dream Board
+                  </div>
+                )}
               </TabsTrigger>
             </TabsList>
           </div>
 
-          {/* Daily Focus Panel */}
-          <TabsContent value="focus" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-              <div className="lg:col-span-4 flex flex-col">
-                <FocusTimer userId={currentUserId} onLogSaved={fetchStudyLogs} />
-              </div>
-              <div className="lg:col-span-8 flex flex-col">
-                {loadingLogs ? (
-                  <ContributionGridSkeleton />
-                ) : (
-                  <ContributionGrid logs={displayLogs} />
-                )}
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Preparation Hub Panel */}
-          <TabsContent value="hub" className="space-y-6">
-            {/* Header banner */}
-            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-violet-600/5 blur-[80px] pointer-events-none" />
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Target className="w-6 h-6 text-violet-400" />
-                  <h2 className="text-xl font-bold text-slate-100 font-orbitron tracking-wide">Preparation Hub</h2>
+          {/* Sidebar Bottom: Profile settings */}
+          <div className="relative" ref={dropdownRef}>
+            {isSidebarExpanded ? (
+              <div
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/20 border border-slate-850 hover:bg-slate-900/40 hover:border-violet-500/20 transition-all duration-300 w-full cursor-pointer"
+              >
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-full border border-violet-500/35 bg-slate-950 text-violet-400 font-audiowide text-xs shrink-0">
+                  {userEmailInitials}
+                  <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950" />
                 </div>
-                <p className="text-slate-400 text-sm max-w-2xl leading-relaxed">
-                  Land your dream role at <strong className="text-slate-200">Google, Amazon, or Microsoft</strong>. Success is built on daily execution. Monitor your progress and metrics below.
-                </p>
+                <div className="flex flex-col min-w-0 text-left">
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide leading-none mb-0.5">User</span>
+                  <span className="text-[10px] text-slate-300 font-semibold font-mono truncate w-32 leading-none">{user ? user.email : 'Guest Mode'}</span>
+                </div>
               </div>
-              <div className="bg-slate-950/85 p-4 rounded-xl border border-violet-500/20 flex flex-col items-center justify-center min-w-[200px] text-center shadow-lg shadow-violet-950/20">
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide mb-1">Target Date Countdown</span>
-                <span className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{daysRemaining}</span>
-                <span className="text-[10px] text-violet-400 font-bold uppercase tracking-wider font-orbitron mt-1">Days Remaining</span>
+            ) : (
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="relative flex items-center justify-center w-10 h-10 rounded-full border border-violet-500/35 hover:border-violet-500/80 bg-slate-900/60 hover:bg-slate-900 transition-all duration-300 text-violet-400 cursor-pointer"
+                >
+                  <User className="w-5 h-5 text-violet-400" />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-950" />
+                </button>
               </div>
+            )}
+
+            {/* Profile Dropdown Menu */}
+            {isProfileOpen && (
+              <div
+                className={cn(
+                  "absolute rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md shadow-2xl shadow-violet-950/30 py-2 z-50 animate-in fade-in duration-200 w-64",
+                  isSidebarExpanded ? "bottom-14 left-0" : "bottom-0 left-14"
+                )}
+              >
+                <div className="px-4 py-2 border-b border-slate-900 flex flex-col">
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide">Profile Settings</span>
+                  <span className="text-xs text-slate-300 font-semibold font-mono truncate">{user ? user.email : 'Guest / Demo Mode'}</span>
+                </div>
+                <div className="p-1 space-y-0.5 font-audiowide">
+                  <button
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      setIsClearConfirmOpen(true);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                  >
+                    <Trash2 className="w-4 h-4 text-violet-400" />
+                    Clear All Counts
+                  </button>
+                  {isSupabaseConfigured && (
+                    <button
+                      onClick={() => {
+                        setIsProfileOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-violet-600/10 hover:border-violet-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                    >
+                      <LogOut className="w-4 h-4 text-violet-400" />
+                      Log Out
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </aside>
+
+        {/* Right Content Viewport */}
+        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+          {/* Unconfigured Demo Notice */}
+          {!isSupabaseConfigured && (
+            <div className="bg-amber-500/10 border-b border-amber-500/20 text-amber-200 text-xs py-2 px-4 flex items-center justify-between gap-3 shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="bg-amber-500 text-slate-950 font-bold px-1.5 py-0.5 rounded text-[10px]">DEMO PREVIEW</span>
+                <span>Local DB is inactive. Configure your credentials in <code className="bg-slate-950/60 px-1 rounded py-0.5">.env.local</code> to store logs.</span>
+              </div>
+              <Button
+                variant="link"
+                onClick={() => router.push('/login')}
+                className="text-amber-300 font-bold text-xs h-auto p-0 hover:text-amber-200"
+              >
+                Setup Guide
+              </Button>
             </div>
+          )}
 
-            {/* Category Details & Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Total Prep */}
-              <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-violet-600/5 rounded-bl-full pointer-events-none group-hover:bg-violet-600/10 transition-all" />
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">Total Preparation</span>
-                    <div className="p-1.5 rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                      <Flame className="w-4 h-4 fill-current animate-pulse" />
-                    </div>
+          {/* Main Content Area */}
+          <div className="max-w-7xl w-full mx-auto px-6 py-6 space-y-6 relative z-10 flex-1">
+            {/* Daily Focus Panel */}
+            <TabsContent value="focus" className="space-y-6 outline-none">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                <div className="lg:col-span-4 flex flex-col">
+                  <FocusTimer userId={currentUserId} onLogSaved={fetchStudyLogs} />
+                </div>
+                <div className="lg:col-span-8 flex flex-col">
+                  {loadingLogs ? (
+                    <ContributionGridSkeleton />
+                  ) : (
+                    <ContributionGrid logs={displayLogs} />
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Preparation Hub Panel */}
+            <TabsContent value="hub" className="space-y-6 outline-none">
+              {/* Header banner */}
+              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-violet-600/5 blur-[80px] pointer-events-none" />
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Target className="w-6 h-6 text-violet-400" />
+                    <h2 className="text-xl font-bold text-slate-100 font-orbitron tracking-wide">Preparation Hub</h2>
                   </div>
-                  <div className="space-y-1">
-                    <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.totalHours} hrs</h3>
-                    <p className="text-[10px] text-slate-500 font-semibold font-mono">Cumulative across all topics</p>
-                  </div>
-                  <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
-                    Your combined effort towards master level proficiency.
+                  <p className="text-slate-400 text-sm max-w-2xl leading-relaxed">
+                    Land your dream role at <strong className="text-slate-200">Google, Amazon, or Microsoft</strong>. Success is built on daily execution. Monitor your progress and metrics below.
                   </p>
-                </CardContent>
-              </Card>
+                </div>
+                <div className="bg-slate-950/85 p-4 rounded-xl border border-violet-500/20 flex flex-col items-center justify-center min-w-[200px] text-center shadow-lg shadow-violet-950/20">
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide mb-1">Target Date Countdown</span>
+                  <span className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{daysRemaining}</span>
+                  <span className="text-[10px] text-violet-400 font-bold uppercase tracking-wider font-orbitron mt-1">Days Remaining</span>
+                </div>
+              </div>
 
-              {/* DSA Logs */}
-              <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-600/5 rounded-bl-full pointer-events-none group-hover:bg-indigo-600/10 transition-all" />
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">DSA Logs</span>
-                    <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                      <Target className="w-4 h-4" />
+              {/* Category Details & Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Total Prep */}
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-violet-600/5 rounded-bl-full pointer-events-none group-hover:bg-violet-600/10 transition-all" />
+                  <CardContent className="p-6 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">Total Preparation</span>
+                      <div className="p-1.5 rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
+                        <Flame className="w-4 h-4 fill-current animate-pulse" />
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.dsaHours} hrs</h3>
-                    <p className="text-[10px] text-slate-500 font-semibold font-mono">Algorithms & Data Structures</p>
-                  </div>
-                  <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
-                    Focus: LeetCode problems, graph patterns, dynamic programming, and complexity.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* LLD Logs */}
-              <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/5 rounded-bl-full pointer-events-none group-hover:bg-purple-600/10 transition-all" />
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">LLD Logs</span>
-                    <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
-                      <Flame className="w-4 h-4" />
+                    <div className="space-y-1">
+                      <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.totalHours} hrs</h3>
+                      <p className="text-[10px] text-slate-500 font-semibold font-mono">Cumulative across all topics</p>
                     </div>
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.lldHours} hrs</h3>
-                    <p className="text-[10px] text-slate-500 font-semibold font-mono">Low Level Design</p>
-                  </div>
-                  <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
-                    Focus: OOP guidelines, SOLID concepts, design patterns, and machine coding.
-                  </p>
-                </CardContent>
-              </Card>
+                    <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
+                      Your combined effort towards master level proficiency.
+                    </p>
+                  </CardContent>
+                </Card>
 
-              {/* Sys Design Logs */}
-              <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-pink-600/5 rounded-bl-full pointer-events-none group-hover:bg-pink-600/10 transition-all" />
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">Sys Design</span>
-                    <div className="p-1.5 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20">
-                      <Target className="w-4 h-4" />
+                {/* DSA Logs */}
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-600/5 rounded-bl-full pointer-events-none group-hover:bg-indigo-600/10 transition-all" />
+                  <CardContent className="p-6 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">DSA Logs</span>
+                      <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                        <Target className="w-4 h-4" />
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.sdHours} hrs</h3>
-                    <p className="text-[10px] text-slate-500 font-semibold font-mono">System Architecture</p>
-                  </div>
-                  <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
-                    Focus: Scalability, database sharding, caching, microservices, and system design.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+                    <div className="space-y-1">
+                      <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.dsaHours} hrs</h3>
+                      <p className="text-[10px] text-slate-500 font-semibold font-mono">Algorithms & Data Structures</p>
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
+                      Focus: LeetCode problems, graph patterns, dynamic programming, and complexity.
+                    </p>
+                  </CardContent>
+                </Card>
 
-          {/* Vision Board Panel */}
-          <TabsContent value="vision" className="space-y-6">
-            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
-              <VisionBoard userId={currentUserId} />
-            </div>
-          </TabsContent>
+                {/* LLD Logs */}
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-purple-600/5 rounded-bl-full pointer-events-none group-hover:bg-purple-600/10 transition-all" />
+                  <CardContent className="p-6 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">LLD Logs</span>
+                      <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                        <Flame className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.lldHours} hrs</h3>
+                      <p className="text-[10px] text-slate-500 font-semibold font-mono">Low Level Design</p>
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
+                      Focus: OOP guidelines, SOLID concepts, design patterns, and machine coding.
+                    </p>
+                  </CardContent>
+                </Card>
 
-          {/* Dream Board Panel */}
-          <TabsContent value="dreamboard" className="space-y-6">
-            <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
-              <DreamBoard userId={currentUserId} />
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+                {/* Sys Design Logs */}
+                <Card className="bg-slate-900/40 border border-slate-800/80 backdrop-blur-md shadow-lg relative overflow-hidden group hover:border-violet-500/30 transition-all duration-300">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-pink-600/5 rounded-bl-full pointer-events-none group-hover:bg-pink-600/10 transition-all" />
+                  <CardContent className="p-6 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-audiowide">Sys Design</span>
+                      <div className="p-1.5 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20">
+                        <Target className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-3xl font-black text-slate-100 font-oxanium tracking-wide">{summary.sdHours} hrs</h3>
+                      <p className="text-[10px] text-slate-500 font-semibold font-mono">System Architecture</p>
+                    </div>
+                    <p className="text-xs text-slate-400 leading-relaxed pt-2 border-t border-slate-800/40">
+                      Focus: Scalability, database sharding, caching, microservices, and system design.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            {/* Vision Board Panel */}
+            <TabsContent value="vision" className="space-y-6 outline-none">
+              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+                <VisionBoard userId={currentUserId} />
+              </div>
+            </TabsContent>
+
+            {/* Dream Board Panel */}
+            <TabsContent value="dreamboard" className="space-y-6 outline-none">
+              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+                <DreamBoard userId={currentUserId} />
+              </div>
+            </TabsContent>
+          </div>
+        </div>
+      </Tabs>
 
       {/* Clear Counts Confirmation Modal */}
       <Dialog open={isClearConfirmOpen} onOpenChange={setIsClearConfirmOpen}>
