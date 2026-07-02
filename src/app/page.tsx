@@ -11,7 +11,7 @@ import StudyNotes from '@/components/StudyNotes';
 import BlogsFeed from '@/components/BlogsFeed';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Crosshair, Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud, PanelLeftClose, PanelLeftOpen, Menu, X, BookOpen, Rss } from 'lucide-react';
+import { Crosshair, Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud, PanelLeftClose, PanelLeftOpen, Menu, X, BookOpen, Rss, Sun, Moon } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { differenceInDays, parseISO } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -37,6 +37,25 @@ export default function DashboardPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const mobileDropdownRef = useRef<HTMLDivElement>(null);
   const desktopDropdownRef = useRef<HTMLDivElement>(null);
+
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  // Initialize theme from class list
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    setTheme(isDark ? 'dark' : 'light');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    if (newTheme === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  };
 
   // User initials for sidebar avatar
   const userEmailInitials = React.useMemo(() => {
@@ -273,10 +292,12 @@ export default function DashboardPage() {
   const currentUserId = user?.id || 'mock-user-id';
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row relative overflow-hidden">
-      {/* Visual background accents */}
-      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-orange-600/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/5 blur-[120px] pointer-events-none" />
+    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 flex flex-col md:flex-row relative overflow-hidden">
+      {/* Visual background accents at the corners for subtle glassmorphism */}
+      <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-orange-600/15 to-rose-500/15 dark:from-orange-600/15 dark:to-rose-500/15 blur-[140px] pointer-events-none animate-pulse duration-[12000ms]" />
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-amber-500/15 to-yellow-500/15 dark:from-amber-500/15 dark:to-yellow-500/15 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[550px] h-[550px] rounded-full bg-gradient-to-br from-rose-500/15 to-orange-500/15 dark:from-rose-500/15 dark:to-orange-500/15 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[650px] h-[650px] rounded-full bg-gradient-to-tr from-orange-500/15 to-amber-600/15 dark:from-orange-500/15 dark:to-amber-600/15 blur-[150px] pointer-events-none animate-pulse duration-[14000ms]" />
 
       <Tabs defaultValue="focus" orientation="vertical" className="flex flex-col md:flex-row w-full min-h-screen">
         {/* Mobile Top Bar - visible only on small screens */}
@@ -300,8 +321,8 @@ export default function DashboardPage() {
             </button>
             {/* Mobile Profile Dropdown */}
             {isProfileOpen && (
-              <div className="absolute right-0 top-12 rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md shadow-2xl shadow-orange-950/30 py-2 z-50 animate-in fade-in duration-200 w-64">
-                <div className="px-4 py-2 border-b border-slate-900 flex flex-col">
+              <div className="absolute right-0 top-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-2xl shadow-slate-300/50 dark:shadow-orange-950/30 py-2 z-50 animate-in fade-in duration-200 w-64">
+                <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-900 flex flex-col">
                   <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide">Profile Settings</span>
                   <span className="text-xs text-slate-300 font-semibold font-mono truncate">{user ? user.email : 'Guest / Demo Mode'}</span>
                 </div>
@@ -311,10 +332,26 @@ export default function DashboardPage() {
                       setIsProfileOpen(false);
                       setIsClearConfirmOpen(true);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-slate-50 hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
                   >
                     <Trash2 className="w-4 h-4 text-orange-400" />
                     Clear All Counts
+                  </button>
+                  <button
+                    onClick={toggleTheme}
+                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-slate-50 hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                  >
+                    {theme === 'dark' ? (
+                      <>
+                        <Sun className="w-4 h-4 text-orange-400" />
+                        Switch to Light Theme
+                      </>
+                    ) : (
+                      <>
+                        <Moon className="w-4 h-4 text-orange-400" />
+                        Switch to Dark Theme
+                      </>
+                    )}
                   </button>
                   {isSupabaseConfigured && (
                     <button
@@ -322,7 +359,7 @@ export default function DashboardPage() {
                         setIsProfileOpen(false);
                         handleLogout();
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-slate-50 hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
                     >
                       <LogOut className="w-4 h-4 text-orange-400" />
                       Log Out
@@ -344,7 +381,7 @@ export default function DashboardPage() {
         >
           <div
             className={cn(
-              "absolute top-0 left-0 h-full w-72 bg-slate-950/95 border-r border-slate-800 backdrop-blur-md shadow-2xl shadow-orange-950/20 flex flex-col p-4 transition-transform duration-300 ease-in-out",
+              "absolute top-0 left-0 h-full w-72 bg-white dark:bg-slate-950/95 border-r border-slate-200 dark:border-slate-800 backdrop-blur-md shadow-2xl shadow-slate-200/50 dark:shadow-orange-950/20 flex flex-col p-4 transition-transform duration-300 ease-in-out",
               isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
             )}
             onClick={(e) => e.stopPropagation()}
@@ -356,7 +393,7 @@ export default function DashboardPage() {
               </span>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 rounded-lg hover:bg-slate-900 text-slate-400 hover:text-orange-400 cursor-pointer transition-colors"
+                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-500 dark:text-slate-400 hover:text-orange-500 dark:hover:text-orange-400 cursor-pointer transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -367,7 +404,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="focus"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+                className="relative group rounded-lg text-slate-350 hover:text-slate-100 dark:text-slate-400 dark:hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
               >
                 <Crosshair className="w-5 h-5 text-orange-400 shrink-0" />
                 <span className="text-xs">Daily Focus</span>
@@ -376,7 +413,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="hub"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+                className="relative group rounded-lg text-slate-350 hover:text-slate-100 dark:text-slate-400 dark:hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
               >
                 <Target className="w-5 h-5 text-orange-400 shrink-0" />
                 <span className="text-xs">Preparation Hub</span>
@@ -385,7 +422,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="notes"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+                className="relative group rounded-lg text-slate-350 hover:text-slate-100 dark:text-slate-400 dark:hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
               >
                 <BookOpen className="w-5 h-5 text-orange-400 shrink-0" />
                 <span className="text-xs">Study Notes</span>
@@ -394,7 +431,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="feed"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+                className="relative group rounded-lg text-slate-350 hover:text-slate-100 dark:text-slate-400 dark:hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
               >
                 <Rss className="w-5 h-5 text-orange-400 shrink-0" />
                 <span className="text-xs">Community Feed</span>
@@ -404,7 +441,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="vision"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+                className="relative group rounded-lg text-slate-350 hover:text-slate-100 dark:text-slate-400 dark:hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
               >
                 <Sparkles className="w-5 h-5 text-orange-400 shrink-0" />
                 <span className="text-xs">Vision Board</span>
@@ -413,7 +450,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="dreamboard"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+                className="relative group rounded-lg text-slate-350 hover:text-slate-100 dark:text-slate-400 dark:hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
               >
                 <Cloud className="w-5 h-5 text-orange-400 shrink-0" />
                 <span className="text-xs">Dream Board</span>
@@ -421,11 +458,11 @@ export default function DashboardPage() {
             </TabsList>
 
             {/* Drawer Bottom: User info */}
-            <div className="mt-auto pt-6 border-t border-slate-800/40">
-              <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/20 border border-slate-850">
-                <div className="relative flex items-center justify-center w-8 h-8 rounded-full border border-orange-500/35 bg-slate-950 text-orange-400 font-audiowide text-xs shrink-0">
+            <div className="mt-auto pt-6 border-t border-slate-800">
+              <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/40 border border-slate-800">
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-full border border-orange-500/35 bg-white dark:bg-slate-950 text-orange-400 font-audiowide text-xs shrink-0">
                   {userEmailInitials}
-                  <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-slate-950" />
+                  <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border border-white dark:border-slate-950" />
                 </div>
                 <div className="flex flex-col min-w-0 text-left">
                   <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider font-audiowide leading-none mb-0.5">User</span>
@@ -475,7 +512,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="focus"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-400 hover:text-slate-202 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
@@ -491,7 +528,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="hub"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-400 hover:text-slate-202 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
@@ -507,7 +544,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="notes"
                 className={cn(
-                  "relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-455 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
@@ -523,7 +560,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="feed"
                 className={cn(
-                  "relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-455 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
@@ -540,7 +577,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="vision"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-402 hover:text-slate-202 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
@@ -556,7 +593,7 @@ export default function DashboardPage() {
               <TabsTrigger
                 value="dreamboard"
                 className={cn(
-                  "relative group rounded-lg text-slate-400 hover:text-slate-200 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  "relative group rounded-lg text-slate-402 hover:text-slate-202 data-active:bg-orange-600/20 data-active:text-black dark:data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
                   !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
                 )}
               >
@@ -617,10 +654,26 @@ export default function DashboardPage() {
                       setIsProfileOpen(false);
                       setIsClearConfirmOpen(true);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-slate-50 hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
                   >
                     <Trash2 className="w-4 h-4 text-orange-400" />
                     Clear All Counts
+                  </button>
+                  <button
+                    onClick={toggleTheme}
+                    className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-slate-50 hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                  >
+                    {theme === 'dark' ? (
+                      <>
+                        <Sun className="w-4 h-4 text-orange-400" />
+                        Switch to Light Theme
+                      </>
+                    ) : (
+                      <>
+                        <Moon className="w-4 h-4 text-orange-400" />
+                        Switch to Dark Theme
+                      </>
+                    )}
                   </button>
                   {isSupabaseConfigured && (
                     <button
@@ -628,7 +681,7 @@ export default function DashboardPage() {
                         setIsProfileOpen(false);
                         handleLogout();
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-white hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
+                      className="w-full text-left px-3 py-2 rounded-lg text-[10px] tracking-wider font-semibold text-slate-350 hover:text-slate-50 hover:bg-orange-600/10 hover:border-orange-500/15 flex items-center gap-2 cursor-pointer transition-all"
                     >
                       <LogOut className="w-4 h-4 text-orange-400" />
                       Log Out
@@ -784,14 +837,14 @@ export default function DashboardPage() {
 
             {/* Study Notes Panel */}
             <TabsContent value="notes" className="space-y-6 outline-none">
-              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+              <div className="p-4 md:p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
                 <StudyNotes userId={currentUserId} />
               </div>
             </TabsContent>
 
             {/* Community Feed Panel */}
             <TabsContent value="feed" className="space-y-6 outline-none">
-              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+              <div className="p-4 md:p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
                 <BlogsFeed userId={currentUserId} userEmail={user?.email || 'guest@mygoal.dev'} />
               </div>
             </TabsContent>
@@ -799,14 +852,14 @@ export default function DashboardPage() {
 
             {/* Vision Board Panel */}
             <TabsContent value="vision" className="space-y-6 outline-none">
-              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+              <div className="p-4 md:p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
                 <VisionBoard userId={currentUserId} />
               </div>
             </TabsContent>
 
             {/* Dream Board Panel */}
             <TabsContent value="dreamboard" className="space-y-6 outline-none">
-              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+              <div className="p-4 md:p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
                 <DreamBoard userId={currentUserId} />
               </div>
             </TabsContent>

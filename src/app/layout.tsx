@@ -56,11 +56,27 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${orbitron.variable} ${oxanium.variable} ${spaceMono.variable} ${audiowide.variable} h-full antialiased dark`}
+      className={`${spaceGrotesk.variable} ${orbitron.variable} ${oxanium.variable} ${spaceMono.variable} ${audiowide.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
-        <RegisterSW />
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const stored = localStorage.getItem('theme');
+                if (stored === 'light' || (!stored && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+                  document.documentElement.classList.remove('dark');
+                } else {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch (_) {}
+            `,
+          }}
+        />
+      </head>
+      <body className="h-full bg-background text-foreground font-sans">
         {children}
+        <RegisterSW />
       </body>
     </html>
   );

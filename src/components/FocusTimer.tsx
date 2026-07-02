@@ -234,7 +234,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
           <button
             onClick={() => { setIsTimerMode(true); setStatusMsg(null); }}
             className={`px-3 py-1 text-[10px] tracking-wider font-semibold rounded-md transition-all ${
-              isTimerMode ? 'bg-orange-600/20 text-orange-300 border border-orange-500/20' : 'text-slate-500 hover:text-slate-300'
+              isTimerMode ? 'bg-orange-600/20 text-black dark:text-orange-300 border border-orange-500/20' : 'text-neutral-500 hover:text-neutral-900 dark:text-slate-500 dark:hover:text-slate-300'
             }`}
           >
             Timer
@@ -242,7 +242,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
           <button
             onClick={() => { setIsTimerMode(false); setStatusMsg(null); }}
             className={`px-3 py-1 text-[10px] tracking-wider font-semibold rounded-md transition-all ${
-              !isTimerMode ? 'bg-orange-600/20 text-orange-300 border border-orange-500/20' : 'text-slate-500 hover:text-slate-300'
+              !isTimerMode ? 'bg-orange-600/20 text-black dark:text-orange-300 border border-orange-500/20' : 'text-neutral-500 hover:text-neutral-900 dark:text-slate-500 dark:hover:text-slate-300'
             }`}
           >
             Manual
@@ -260,8 +260,8 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
               disabled={isActive && isTimerMode}
               className={`py-2 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border ${
                 category === cat
-                  ? 'bg-gradient-to-r from-orange-600/10 to-amber-600/10 border-orange-500 text-orange-300 shadow-md shadow-orange-950/10'
-                  : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                  ? 'bg-gradient-to-r from-orange-600/10 to-amber-600/10 border-orange-500 text-black dark:text-orange-300 shadow-md shadow-orange-950/10'
+                  : 'bg-slate-950/40 border-slate-800 text-neutral-500 hover:text-neutral-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-900/60'
               } ${(isActive && isTimerMode) ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {cat === 'system_design' ? 'Sys Design' : cat}

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { BookOpen, Search, Plus, Trash2, Edit, X, BookMarked, Layers, Award, Sparkles, Loader2, ArrowRight } from 'lucide-react';
+import { BookOpen, Search, Plus, Trash2, Edit, X, BookMarked, Layers, Award, Sparkles, Loader2, ArrowRight, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface StudyNote {
@@ -513,31 +513,33 @@ export default function StudyNotes({ userId }: StudyNotesProps) {
         </div>
 
         {/* Category Filter */}
-        <div className="md:col-span-3">
+        <div className="md:col-span-3 relative">
           <select
             value={selectedCategoryFilter}
             onChange={(e: any) => setSelectedCategoryFilter(e.target.value)}
-            className="w-full bg-slate-950/60 border border-slate-800 hover:border-slate-700 focus:border-orange-500/50 text-slate-300 font-mono text-xs rounded-lg py-2.5 px-3 outline-none"
+            className="w-full appearance-none bg-slate-950/60 border border-slate-800 hover:border-slate-700 focus:border-orange-500/50 text-slate-300 font-mono text-xs rounded-lg py-2.5 pl-3 pr-10 outline-none cursor-pointer"
           >
             <option value="all">Category: All</option>
             <option value="dsa">DSA</option>
             <option value="lld">LLD</option>
             <option value="system_design">System Design</option>
           </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
         </div>
 
         {/* Mastery Filter */}
-        <div className="md:col-span-3">
+        <div className="md:col-span-3 relative">
           <select
             value={selectedMasteryFilter}
             onChange={(e: any) => setSelectedMasteryFilter(e.target.value)}
-            className="w-full bg-slate-950/60 border border-slate-800 hover:border-slate-700 focus:border-orange-500/50 text-slate-300 font-mono text-xs rounded-lg py-2.5 px-3 outline-none"
+            className="w-full appearance-none bg-slate-950/60 border border-slate-800 hover:border-slate-700 focus:border-orange-500/50 text-slate-300 font-mono text-xs rounded-lg py-2.5 pl-3 pr-10 outline-none cursor-pointer"
           >
             <option value="all">Mastery: All</option>
             <option value="learning">Learning</option>
             <option value="reviewing">Reviewing</option>
             <option value="mastered">Mastered</option>
           </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
         </div>
       </div>
 
