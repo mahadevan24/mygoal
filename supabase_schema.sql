@@ -131,3 +131,40 @@ CREATE POLICY "Users can delete their own study notes"
     ON public.study_notes FOR DELETE 
     USING (auth.uid() = user_id);
 
+
+-- 6. Create Blogs Table
+CREATE TABLE IF NOT EXISTS public.blogs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    user_email TEXT NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    tags TEXT[] DEFAULT '{}'::TEXT[],
+    is_shared BOOLEAN DEFAULT false NOT NULL,
+    claps INTEGER DEFAULT 0 NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS for blogs
+ALTER TABLE public.blogs ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for blogs
+CREATE POLICY "Users can insert their own blogs" 
+    ON public.blogs FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can view shared blogs or their own blogs" 
+    ON public.blogs FOR SELECT 
+    USING (is_shared = true OR auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own blogs" 
+    ON public.blogs FOR UPDATE 
+    USING (auth.uid() = user_id)
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own blogs" 
+    ON public.blogs FOR DELETE 
+    USING (auth.uid() = user_id);
+
+

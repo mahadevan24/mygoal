@@ -139,3 +139,30 @@
     letter-spacing: 0.075em;
   }
 }
+
+/* Modern Dark Scrollbars */
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent !important;
+}
+
+*::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.25) !important;
+  border-radius: 9999px !important;
+  border: 2px solid transparent !important;
+  background-clip: padding-box !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.45) !important;
+  background-clip: padding-box !important;
+}

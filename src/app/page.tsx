@@ -8,9 +8,10 @@ import FocusTimer from '@/components/FocusTimer';
 import VisionBoard from '@/components/VisionBoard';
 import DreamBoard from '@/components/DreamBoard';
 import StudyNotes from '@/components/StudyNotes';
+import BlogsFeed from '@/components/BlogsFeed';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Crosshair, Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud, PanelLeftClose, PanelLeftOpen, Menu, X, BookOpen } from 'lucide-react';
+import { Crosshair, Flame, LogOut, Target, Loader2, Trash2, Sparkles, User, AlertTriangle, Cloud, PanelLeftClose, PanelLeftOpen, Menu, X, BookOpen, Rss } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { differenceInDays, parseISO } from 'date-fns';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -391,6 +392,16 @@ export default function DashboardPage() {
               </TabsTrigger>
 
               <TabsTrigger
+                value="feed"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
+              >
+                <Rss className="w-5 h-5 text-orange-400 shrink-0" />
+                <span className="text-xs">Community Feed</span>
+              </TabsTrigger>
+
+
+              <TabsTrigger
                 value="vision"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3 w-full justify-start px-3 py-3"
@@ -508,6 +519,23 @@ export default function DashboardPage() {
                   </div>
                 )}
               </TabsTrigger>
+
+              <TabsTrigger
+                value="feed"
+                className={cn(
+                  "relative group rounded-lg text-slate-450 hover:text-slate-205 data-active:bg-orange-600/20 data-active:text-orange-300 data-active:border-orange-500/20 border border-transparent transition-all font-semibold tracking-wider flex items-center cursor-pointer gap-3",
+                  !isSidebarExpanded ? "!w-10 !h-10 !flex-none !justify-center !p-0" : "w-full justify-start px-3 py-2.5"
+                )}
+              >
+                <Rss className="w-5 h-5 text-orange-400 shrink-0" />
+                {isSidebarExpanded && <span className="text-xs transition-all duration-300">Community Feed</span>}
+                {!isSidebarExpanded && (
+                  <div className="absolute left-14 hidden group-hover:flex px-2.5 py-1.5 bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-md whitespace-nowrap pointer-events-none z-50 shadow-xl font-orbitron">
+                    Community Feed
+                  </div>
+                )}
+              </TabsTrigger>
+
 
               <TabsTrigger
                 value="vision"
@@ -760,6 +788,14 @@ export default function DashboardPage() {
                 <StudyNotes userId={currentUserId} />
               </div>
             </TabsContent>
+
+            {/* Community Feed Panel */}
+            <TabsContent value="feed" className="space-y-6 outline-none">
+              <div className="p-6 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-md shadow-lg">
+                <BlogsFeed userId={currentUserId} userEmail={user?.email || 'guest@mygoal.dev'} />
+              </div>
+            </TabsContent>
+
 
             {/* Vision Board Panel */}
             <TabsContent value="vision" className="space-y-6 outline-none">
