@@ -231,11 +231,11 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
             {/* Weekday indicators */}
             <div className="flex flex-col gap-1 text-[9px] text-slate-500 pr-2 select-none font-audiowide">
               <div className="h-5 flex items-center">Mon</div>
-              <div className="h-5" />
+              <div className="h-5 flex items-center">Tue</div>
               <div className="h-5 flex items-center">Wed</div>
-              <div className="h-5" />
+              <div className="h-5 flex items-center">Thu</div>
               <div className="h-5 flex items-center">Fri</div>
-              <div className="h-5" />
+              <div className="h-5 flex items-center">Sat</div>
               <div className="h-5 flex items-center">Sun</div>
             </div>
 
@@ -358,11 +358,11 @@ export function ContributionGridSkeleton() {
               {/* Weekday indicators */}
               <div className="flex flex-col gap-1 text-[9px] text-slate-500 pr-2 select-none font-audiowide">
                 <div className="h-5 flex items-center">Mon</div>
-                <div className="h-5" />
+                <div className="h-5 flex items-center">Tue</div>
                 <div className="h-5 flex items-center">Wed</div>
-                <div className="h-5" />
+                <div className="h-5 flex items-center">Thu</div>
                 <div className="h-5 flex items-center">Fri</div>
-                <div className="h-5" />
+                <div className="h-5 flex items-center">Sat</div>
                 <div className="h-5 flex items-center">Sun</div>
               </div>
 
