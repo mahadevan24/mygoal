@@ -22,6 +22,8 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const incrementRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number | null>(null);
+  const accumulatedTimeRef = useRef<number>(0);
 
   // Manual Log states
   const [manualMinutes, setManualMinutes] = useState<string>('');
@@ -39,16 +41,40 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
     };
   }, []);
 
+  // Synchronize timer on visibility change (tab focus) to avoid visual delay
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isActive && !isPaused && startTimeRef.current !== null) {
+        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        setSeconds(accumulatedTimeRef.current + elapsed);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isActive, isPaused]);
+
   const handleStart = () => {
     setIsActive(true);
     setIsPaused(false);
+    startTimeRef.current = Date.now();
+    accumulatedTimeRef.current = 0;
     incrementRef.current = setInterval(() => {
-      setSeconds((prev) => prev + 1);
+      if (startTimeRef.current !== null) {
+        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        setSeconds(accumulatedTimeRef.current + elapsed);
+      }
     }, 1000);
   };
 
   const handlePause = () => {
     setIsPaused(true);
+    if (startTimeRef.current !== null) {
+      accumulatedTimeRef.current += Math.floor((Date.now() - startTimeRef.current) / 1000);
+      startTimeRef.current = null;
+    }
     if (incrementRef.current) {
       clearInterval(incrementRef.current);
       incrementRef.current = null;
@@ -57,8 +83,12 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
 
   const handleResume = () => {
     setIsPaused(false);
+    startTimeRef.current = Date.now();
     incrementRef.current = setInterval(() => {
-      setSeconds((prev) => prev + 1);
+      if (startTimeRef.current !== null) {
+        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        setSeconds(accumulatedTimeRef.current + elapsed);
+      }
     }, 1000);
   };
 
@@ -66,6 +96,8 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
     setIsActive(false);
     setIsPaused(false);
     setSeconds(0);
+    startTimeRef.current = null;
+    accumulatedTimeRef.current = 0;
     if (incrementRef.current) {
       clearInterval(incrementRef.current);
       incrementRef.current = null;
@@ -154,7 +186,12 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
   };
 
   const handleStopAndSave = () => {
-    const elapsedMinutes = Math.max(1, Math.round(seconds / 60)); // minimum 1 min logged if stopwatch ran
+    let currentSeconds = seconds;
+    if (isActive && !isPaused && startTimeRef.current !== null) {
+      const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      currentSeconds = accumulatedTimeRef.current + elapsed;
+    }
+    const elapsedMinutes = Math.max(1, Math.round(currentSeconds / 60)); // minimum 1 min logged if stopwatch ran
     saveLog(elapsedMinutes, new Date().toISOString().split('T')[0], 'Logged via timer session');
   };
 
