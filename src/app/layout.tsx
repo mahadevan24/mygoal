@@ -57,6 +57,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${orbitron.variable} ${oxanium.variable} ${spaceMono.variable} ${audiowide.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <script

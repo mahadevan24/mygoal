@@ -275,7 +275,7 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
             <div className="relative flex items-center justify-center">
               {/* Outer pulsing ring when timer is running */}
               {isActive && !isPaused && (
-                <div className="absolute inset-0 rounded-full border-2 border-orange-500/30 animate-ping opacity-75" />
+                <div className="absolute inset-0 rounded-full border-2 border-orange-500/30 animate-ping opacity-75 pointer-events-none" />
               )}
               <div className="w-36 h-36 rounded-full border-4 border-slate-800 flex flex-col items-center justify-center bg-slate-950/60 shadow-inner z-10">
                 <span className="text-3xl font-mono font-bold text-slate-100 tracking-tight">
