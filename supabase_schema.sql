@@ -95,3 +95,39 @@ USING (
     bucket_id = 'vision-board-images' AND
     (storage.foldername(name))[1] = auth.uid()::text
 );
+
+
+-- 5. Create Study Notes Table
+CREATE TABLE IF NOT EXISTS public.study_notes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    category TEXT NOT NULL CHECK (category IN ('dsa', 'lld', 'system_design')),
+    content TEXT NOT NULL,
+    tags TEXT[] DEFAULT '{}'::TEXT[],
+    mastery_level TEXT NOT NULL DEFAULT 'learning' CHECK (mastery_level IN ('learning', 'reviewing', 'mastered')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS for study_notes
+ALTER TABLE public.study_notes ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for study_notes
+CREATE POLICY "Users can insert their own study notes" 
+    ON public.study_notes FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can view their own study notes" 
+    ON public.study_notes FOR SELECT 
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own study notes" 
+    ON public.study_notes FOR UPDATE 
+    USING (auth.uid() = user_id)
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own study notes" 
+    ON public.study_notes FOR DELETE 
+    USING (auth.uid() = user_id);
+
