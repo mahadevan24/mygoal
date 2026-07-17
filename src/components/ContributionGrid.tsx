@@ -120,9 +120,9 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
 
     days.forEach((day) => {
       currentWeek.push(day);
-      // If we reach 7 days or Saturday, push the week and start a new one
-      // day.getDay() === 6 is Saturday
-      if (day.getDay() === 6 || currentWeek.length === 7) {
+      // If we reach 7 days or Sunday, push the week and start a new one
+      // day.getDay() === 0 is Sunday
+      if (day.getDay() === 0 || currentWeek.length === 7) {
         columns.push(currentWeek);
         currentWeek = [];
       }
