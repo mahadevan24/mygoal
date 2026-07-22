@@ -34,6 +34,13 @@ export default function FocusTimer({ userId, onLogSaved }: FocusTimerProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+  // Auto-dismiss status message after 5 seconds
+  useEffect(() => {
+    if (!statusMsg) return;
+    const timer = setTimeout(() => setStatusMsg(null), 5000);
+    return () => clearTimeout(timer);
+  }, [statusMsg]);
+
   // Clean timer on unmount
   useEffect(() => {
     return () => {
