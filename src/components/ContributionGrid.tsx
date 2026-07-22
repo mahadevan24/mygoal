@@ -66,9 +66,9 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
       const dateToCheck = subDays(new Date(), dayIndex);
       const dateStr = format(dateToCheck, 'yyyy-MM-dd');
       const log = logMap[dateStr];
-      const totalMinutes = log ? (log.dsa_minutes + log.lld_minutes + log.system_design_minutes) : 0;
+      const targetMet = log ? (log.dsa_minutes >= 1 && log.lld_minutes >= 1 && log.system_design_minutes >= 1) : false;
       
-      if (totalMinutes >= 180) { // 3 hours
+      if (targetMet) { // At least 1 min each in DSA, LLD, System Design
         tempCurrentStreak++;
       } else {
         // If they haven't completed today yet, don't break the streak immediately unless yesterday was also missed
@@ -89,15 +89,16 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
     for (let i = days.length - 1; i >= 0; i--) {
       const dateStr = format(days[i], 'yyyy-MM-dd');
       const log = logMap[dateStr];
-      const totalMinutes = log ? (log.dsa_minutes + log.lld_minutes + log.system_design_minutes) : 0;
+      const targetMet = log ? (log.dsa_minutes >= 1 && log.lld_minutes >= 1 && log.system_design_minutes >= 1) : false;
 
-      if (totalMinutes >= 180) {
+      if (targetMet) {
         runningStreak++;
         completedDays++;
         if (runningStreak > maxStreak) {
           maxStreak = runningStreak;
         }
       } else {
+        const totalMinutes = log ? (log.dsa_minutes + log.lld_minutes + log.system_design_minutes) : 0;
         if (totalMinutes > 0) {
           partialDays++;
         }
@@ -144,12 +145,12 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
       return 'bg-slate-900 border-slate-950 hover:border-slate-700';
     }
 
-    const totalMin = log.dsa_minutes + log.lld_minutes + log.system_design_minutes;
-    if (totalMin >= 180) {
+    if (log.dsa_minutes >= 1 && log.lld_minutes >= 1 && log.system_design_minutes >= 1) {
       return 'bg-emerald-500 border-emerald-400 hover:border-white shadow-sm shadow-emerald-550/20'; // Target Met
     }
+    const totalMin = log.dsa_minutes + log.lld_minutes + log.system_design_minutes;
     if (totalMin > 0) {
-      return 'bg-amber-500 border-amber-400 hover:border-white shadow-sm shadow-amber-550/20'; // Target Missed
+      return 'bg-amber-500 border-amber-400 hover:border-white shadow-sm shadow-amber-550/20'; // Partial
     }
     
     return 'bg-slate-900 border-slate-950 hover:border-slate-700';
@@ -294,7 +295,7 @@ export default function ContributionGrid({ logs }: ContributionGridProps) {
                   <span>LLD: <strong className="text-slate-200 font-semibold font-mono">{(hoveredDay.lld / 60).toFixed(1)}h</strong> ({hoveredDay.lld}m)</span>
                   <span>Sys Design: <strong className="text-slate-200 font-semibold font-mono">{(hoveredDay.sd / 60).toFixed(1)}h</strong> ({hoveredDay.sd}m)</span>
                   <span className="border-l border-slate-800 pl-4">
-                    Total: <strong className={`font-semibold font-mono ${hoveredDay.dsa + hoveredDay.lld + hoveredDay.sd >= 180 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    Total: <strong className={`font-semibold font-mono ${hoveredDay.dsa >= 1 && hoveredDay.lld >= 1 && hoveredDay.sd >= 1 ? 'text-emerald-400' : 'text-amber-400'}`}>
                       {((hoveredDay.dsa + hoveredDay.lld + hoveredDay.sd) / 60).toFixed(1)} hrs
                     </strong>
                   </span>
